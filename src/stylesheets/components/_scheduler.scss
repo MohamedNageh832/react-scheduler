@@ -1,0 +1,136 @@
+.scheduler {
+  --grid-cell-width: 120px;
+  --grid-cell-height: 64px;
+  --min-task-height: 14px; // 64px / 4 - 2 (for gap between tasks)
+  --max-task-width: 118px; // 120px / 4 - 2
+  --time-margin-top: 48px; // grid-cell-height - grid-cell-height / 4
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: var(--s3);
+}
+
+// Scheduler header
+
+.scheduler__header {
+  display: flex;
+}
+
+.scheduler__column {
+  position: relative;
+  overflow: hidden;
+  width: var(--grid-cell-width);
+  height: 70px;
+  text-align: center;
+  user-select: none;
+}
+
+.scheduler__column::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -50%;
+  display: block;
+  width: 1px;
+  height: 100%;
+  background-color: var(--hairline);
+}
+
+.scheduler__day,
+.scheduler__date {
+  color: var(--text-secondary);
+}
+
+.scheduler__day {
+  font-size: var(--fs1);
+}
+
+.scheduler__date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  padding: var(--s3);
+  border-radius: 50%;
+  margin: auto;
+  font-size: var(--fs5);
+  cursor: pointer;
+}
+
+.scheduler__date:hover {
+  background-color: var(--bg-primary-hover);
+}
+
+// Scheduler sidebar
+.scheduler__sidebar {
+  width: 50px;
+  padding-top: 14px;
+  padding-right: var(--fs2);
+  text-align: end;
+}
+
+.scheduler__time {
+  position: relative;
+  height: 16px; // grid-cell-height / 4
+  padding-right: 4px;
+  margin-top: var(--time-margin-top);
+  color: var(--text-secondary);
+  font-size: 10px;
+  line-height: 16px;
+  user-select: none;
+}
+
+.scheduler__time::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  right: -38%; // 30% width + 4px padding-right (parent)
+  width: 30%;
+  height: 1px;
+  background-color: var(--hairline);
+}
+
+// Schedular body
+
+.scheduler__body {
+  height: 100%;
+  background-color: #fff;
+}
+
+.scheduler__grid {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 70px);
+  background-size: var(--grid-cell-width) var(--grid-cell-height);
+  background-image: linear-gradient(
+      to right,
+      var(--hairline) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+}
+
+// Scheduler task
+
+.scheduler__task {
+  position: relative;
+  width: var(--max-task-width);
+  height: var(--min-task-height);
+  padding: var(--s1);
+  border-radius: 5px;
+  background-color: var(--blue);
+  color: #fff;
+  font-size: var(--fs1);
+  line-height: 7px;
+  cursor: pointer;
+}
+
+.task__resizer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 8px;
+  cursor: s-resize;
+}

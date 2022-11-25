@@ -1,0 +1,19 @@
+.sidebar {
+  flex-shrink: 0;
+  width: 300px;
+  max-width: 80%;
+  height: calc(100vh - 53px);
+  padding: var(--s3);
+  border-right: 1px solid var(--hairline);
+}
+
+.sidebar__link {
+  display: block;
+  margin-top: var(--s2);
+  color: #767676;
+  font-size: var(--fs3);
+}
+
+.sidebar__link.active {
+  color: #000;
+}

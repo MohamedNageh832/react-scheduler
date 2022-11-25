@@ -1,0 +1,67 @@
+:root {
+  --s1: 0.25rem;
+  --s2: 0.5rem;
+  --s3: 1rem;
+  --s4: 1.5rem;
+  --s5: 2rem;
+
+  /*Border radius*/
+  --mainBR: 5px;
+
+  /* Font sizes */
+  --fs1: 12px;
+  --fs2: 14px;
+  --fs3: 16px;
+  --fs4: 20px;
+  --fs5: 24px;
+  --fs6: 32px;
+
+  /* TODO: edit these */
+  --borderColor: #d9d9d9;
+  --grey-100: #f4f4f4;
+  --grey-200: #e8e8e8;
+  --grey-400: #bbb;
+  --green: #00b894;
+  --green-disabled: #80dbc9;
+  --warning: #ffc107;
+  --red: #dc3545;
+  --blue: #0d6efd;
+  --blue-disabled: #81b2f9;
+  --light-blue: #ddebff;
+  --foreground: #fff;
+
+  // Primarily used colors
+  --bg-primary-hover: #f1f3f4;
+  --text-secondary: #767676;
+  --hairline: #dadce0;
+
+  /**/
+  --box-shadow1: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+@media (min-width: 1400px) {
+  html {
+    font-size: 20px;
+  }
+
+  :root {
+    --fs1: 16px;
+    --fs2: 20px;
+    --fs3: 24px;
+    --fs4: 32px;
+    --fs5: 40px;
+    --fs6: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --fs1: 12px;
+    --fs2: 12px;
+    --fs3: 14px;
+    --fs4: 16px;
+    --fs5: 20px;
+    --fs6: 24px;
+  }
+}
