@@ -13,18 +13,19 @@ const SchedulerGrid = () => {
   const onMouseDown = (e) => {
     currentDragged.current = e.currentTarget;
 
-    const { left, top } = schedulerGridRef.current.getBoundingClientRect();
-    mouseoffset.x = e.clientX - left;
-    mouseoffset.y = e.clientY - top;
+    const windowOffsetX = window.scrollX + e.clientX;
+    const windowOffsetY = window.scrollY + e.clientY;
+    mouseoffset.x = windowOffsetX - schedulerGridRef.current.offsetLeft;
+    mouseoffset.y =
+      windowOffsetY - schedulerGridRef.current.offsetTop - e.target.offsetTop;
   };
 
   const onMouseMove = (e) => {
     e.preventDefault();
 
     if (activeResizer.current) {
-      const { top } = schedulerGridRef.current.getBoundingClientRect();
-
-      const mouseYPos = e.clientY - top;
+      const windowOffsetY = window.scrollY + e.clientY;
+      const mouseYPos = windowOffsetY - schedulerGridRef.current.offsetTop;
       const heightStep = Math.ceil(mouseYPos / MIN_Y_STEP);
 
       activeResizer.current.parentElement.style.height = `${
@@ -34,12 +35,13 @@ const SchedulerGrid = () => {
 
     if (!currentDragged.current) return;
 
-    const { left, top } = schedulerGridRef.current.getBoundingClientRect();
-
-    const mouseXPos = e.clientX - left;
+    const windowOffsetX = window.scrollX + e.clientX;
+    const mouseXPos = windowOffsetX - schedulerGridRef.current.offsetLeft;
     const widthStep = mouseXPos < 1 ? 0 : Math.floor(mouseXPos / MIN_x_STEP);
 
-    const mouseYPos = e.clientY - top - mouseoffset.y;
+    const windowOffsetY = window.scrollY + e.clientY;
+    const mouseYPos =
+      windowOffsetY - schedulerGridRef.current.offsetTop - mouseoffset.y;
     const heightStep = mouseYPos < 1 ? 0 : Math.floor(mouseYPos / MIN_Y_STEP);
 
     currentDragged.current.style.left = `${widthStep * MIN_x_STEP}px`;
