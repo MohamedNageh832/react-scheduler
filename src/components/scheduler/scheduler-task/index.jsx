@@ -1,5 +1,5 @@
 const SchedulerTask = (props) => {
-  const { activeResizer, ...otherProps } = props;
+  const { activeResizer, task, ...otherProps } = props || {};
 
   const startResize = (e) => {
     e.stopPropagation();
@@ -7,9 +7,13 @@ const SchedulerTask = (props) => {
   };
 
   return (
-    <div className="scheduler__task" {...otherProps}>
-      <h4 className="task__name">task</h4>
-      <p className="task__time"></p>
+    <div
+      className="scheduler__task"
+      style={{ left: task.left, top: task.top }}
+      {...otherProps}
+    >
+      <h4 className="task__name">{task.name}</h4>
+      <p className="task__time">{task.time}</p>
       <span className="task__resizer" onMouseDown={startResize}></span>
     </div>
   );

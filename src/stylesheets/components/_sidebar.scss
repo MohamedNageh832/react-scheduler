@@ -5,15 +5,29 @@
   height: calc(100vh - 53px);
   padding: var(--s3);
   border-right: 1px solid var(--hairline);
+  font-size: var(--fs2);
 }
 
 .sidebar__link {
   display: block;
   margin-top: var(--s2);
   color: #767676;
-  font-size: var(--fs3);
 }
 
 .sidebar__link.active {
   color: #000;
+}
+
+.sidebar__controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  padding-top: var(--s3);
+  border-top: 1px solid var(--hairline);
+  margin-top: var(--s3);
+}
+
+.sidebar__label {
+  display: block;
+  margin-bottom: var(--s2);
 }

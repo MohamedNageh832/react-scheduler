@@ -6,3 +6,9 @@
   display: flex;
   justify-content: space-between;
 }
+
+@for $i from 1 through 6 {
+  .fs-#{$i} {
+    font-size: var(--#{$i});
+  }
+}

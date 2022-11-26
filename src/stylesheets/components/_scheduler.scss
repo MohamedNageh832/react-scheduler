@@ -5,8 +5,7 @@
   --max-task-width: 118px; // 120px / 4 - 2
   --time-margin-top: 48px; // grid-cell-height - grid-cell-height / 4
   display: flex;
-  justify-content: center;
-  width: 100%;
+  overflow: auto;
   padding: var(--s3);
 }
 
@@ -72,6 +71,7 @@
 
 .scheduler__time {
   position: relative;
+  width: 38px;
   height: 16px; // grid-cell-height / 4
   padding-right: 4px;
   margin-top: var(--time-margin-top);
@@ -114,7 +114,9 @@
 // Scheduler task
 
 .scheduler__task {
-  position: relative;
+  position: absolute;
+  display: flex;
+  gap: var(--s1);
   width: var(--max-task-width);
   height: var(--min-task-height);
   padding: var(--s1);

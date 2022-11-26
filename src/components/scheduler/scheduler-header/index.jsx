@@ -1,39 +1,13 @@
 import { useState } from "react";
+import getSchedulerHeader from "../../../utils/getSchedulerHeader";
 import SchedulerColumn from "./scheduler-column";
 
-const days = [
-  {
-    day: "sunday",
-    date: 9,
-  },
-  {
-    day: "sunday",
-    date: 9,
-  },
-  {
-    day: "sunday",
-    date: 9,
-  },
-  {
-    day: "sunday",
-    date: 9,
-  },
-  {
-    day: "sunday",
-    date: 9,
-  },
-  {
-    day: "sunday",
-    date: 9,
-  },
-];
-
-const SchedulerHeader = () => {
-  const [daysVisible, setDaysVisible] = useState(days);
+const SchedulerHeader = ({ activeWeek }) => {
+  const headerData = activeWeek ? activeWeek : getSchedulerHeader(new Date());
 
   return (
     <header className="scheduler__header">
-      {daysVisible.map((item, i) => (
+      {headerData.map((item, i) => (
         <SchedulerColumn key={i} data={item} />
       ))}
     </header>

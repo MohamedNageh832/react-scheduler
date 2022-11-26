@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
+import SidebarControls from "./sidebar-controls";
 
-const Sidebar = () => {
+const Sidebar = ({ updateScheduler }) => {
   return (
     <aside className="sidebar">
       <NavLink className="sidebar__link" to="/">
@@ -9,6 +10,7 @@ const Sidebar = () => {
       <NavLink className="sidebar__link" to="/about-us">
         About us
       </NavLink>
+      <SidebarControls onWeekChange={updateScheduler} />
     </aside>
   );
 };

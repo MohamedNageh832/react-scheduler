@@ -9,17 +9,12 @@ html {
   line-height: 1.8;
 }
 
-label {
-  font-size: var(--fs3);
-}
-
 input {
   padding: var(--s2);
   border: 1px solid var(--borderColor);
   border-radius: var(--mainBR);
   background-color: inherit;
   color: inherit;
-  font-size: var(--fs3);
 }
 
 select:focus-visible {
