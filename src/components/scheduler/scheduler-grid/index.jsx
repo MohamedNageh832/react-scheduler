@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { mouseOffsetX, mouseOffsetY } from "../../../utils/mouseOffset";
 import SchedulerTask from "../scheduler-task";
 
@@ -10,12 +10,24 @@ const SchedulerGrid = () => {
   const [tasks, setTasks] = useState([]);
   const [isEditting, setIsEditting] = useState(null);
   const schedulerGridRef = useRef();
-  const currentDragged = useRef(null);
-  const activeResizer = useRef(null);
-  const mouseOffset = { x: 0, y: 0 };
+  const draggedIdx = useRef(-1);
+  const activeResizer = useRef(-1);
+  const mouseOffset = useMemo(() => ({ x: 0, y: 0 }), [draggedIdx.current]);
+
+  const getTaskTime = ({ offsetTop, verticalStep }) => {
+    const hours = Math.floor(offsetTop / ONE_HOUR_IN_GRID);
+    const minutes = (verticalStep % 4) * 15;
+
+    const hours12 = hours < 13 ? hours : hours - 12;
+    const adjustedHours = hours12 < 10 ? `0${hours12}` : hours12;
+    const adjustedMinutes = minutes < 15 ? `0${minutes}` : minutes;
+    const adjustedTime = hours < 12 ? "am" : "pm";
+
+    return `${adjustedHours}:${adjustedMinutes} ${adjustedTime}`;
+  };
 
   const handleAddTask = (e) => {
-    if (currentDragged.current || activeResizer.current) return;
+    if (draggedIdx.current !== -1 || activeResizer.current !== -1) return;
 
     const mouseXPos = mouseOffsetX(e, schedulerGridRef.current);
     const mouseYPos = mouseOffsetY(e, schedulerGridRef.current);
@@ -25,40 +37,30 @@ const SchedulerGrid = () => {
 
     const itemOffsetLeft = horizontalStep * MIN_X_STEP;
     const itemOffsetTop = verticalStep * MIN_Y_STEP;
-    console.log(itemOffsetTop);
-    console.log(mouseYPos);
-
-    const task24Hour = Math.floor(itemOffsetTop / ONE_HOUR_IN_GRID);
-    const taskMinutes = (verticalStep % 4) * 15;
-
-    const adjustTime = (hours, minutes) => {
-      const hours12 = hours < 13 ? hours : hours - 12;
-      const adjustedHours = hours12 < 10 ? `0${hours12}` : hours12;
-      const adjustedMinutes = minutes < 15 ? `0${minutes}` : minutes;
-      const adjustedTime = hours < 12 ? "am" : "pm";
-
-      return `${adjustedHours}:${adjustedMinutes} ${adjustedTime}`;
-    };
-
-    const time = adjustTime(task24Hour, taskMinutes);
-    task24Hour < 12;
+    const timeStart = getTaskTime({ offsetTop: itemOffsetTop, verticalStep });
+    const timeEnd = getTaskTime({
+      offsetTop: itemOffsetTop + MIN_Y_STEP,
+      verticalStep: verticalStep + 1,
+    });
 
     const newTask = {
       name: "hi",
       top: itemOffsetTop,
       left: itemOffsetLeft,
-      time,
+      heightSpan: 1,
+      time: `${timeStart} - ${timeEnd}`,
     };
 
     setTasks((prev) => [...prev, newTask]);
   };
 
-  const onMouseDown = (e) => {
+  const onMouseDown = (e, idx) => {
     if (e.currentTarget === schedulerGridRef.current) {
       handleAddTask(e);
       return;
     }
-    currentDragged.current = e.currentTarget;
+
+    draggedIdx.current = idx;
 
     // mosue offsets relative to parent
     mouseOffset.x = mouseOffsetX(e, schedulerGridRef.current);
@@ -69,18 +71,30 @@ const SchedulerGrid = () => {
   const onMouseMove = (e) => {
     e.preventDefault();
 
-    if (activeResizer.current) {
-      const mouseYPos =
-        mouseOffsetY(e, schedulerGridRef.current) -
-        activeResizer.current.parentElement.offsetTop;
+    if (activeResizer.current !== -1) {
+      const tasksClone = [...tasks];
+      const task = tasksClone[activeResizer.current];
+
+      const mouseYPos = mouseOffsetY(e, schedulerGridRef.current) - task.top;
       const verticalStep = Math.floor(mouseYPos / MIN_Y_STEP);
 
-      activeResizer.current.parentElement.style.height = `${
-        verticalStep * MIN_Y_STEP - 2
-      }px`;
+      task.heightSpan = verticalStep;
+      const timeStart = getTaskTime({
+        offsetTop: task.top,
+        verticalStep: task.top,
+      });
+
+      const timeEnd = getTaskTime({
+        offsetTop: task.top + task.heightSpan * MIN_Y_STEP,
+        verticalStep: task.top + task.heightSpan,
+      });
+
+      task.time = `${timeStart} - ${timeEnd}`;
+
+      setTasks(tasksClone);
     }
 
-    if (!currentDragged.current) return;
+    if (draggedIdx.current === -1) return;
 
     const mouseXPos = mouseOffsetX(e, schedulerGridRef.current);
     const horizontalStep =
@@ -89,20 +103,37 @@ const SchedulerGrid = () => {
     const mouseYPos = mouseOffsetY(e, schedulerGridRef.current) - mouseOffset.y;
     const verticalStep = mouseYPos < 1 ? 0 : Math.floor(mouseYPos / MIN_Y_STEP);
 
-    currentDragged.current.style.left = `${horizontalStep * MIN_X_STEP}px`;
-    currentDragged.current.style.top = `${verticalStep * MIN_Y_STEP}px`;
+    const tasksClone = [...tasks];
+    const task = tasksClone[draggedIdx.current];
+
+    const taskOffsetLeft = horizontalStep * MIN_X_STEP;
+    const taskOffsetTop = verticalStep * MIN_Y_STEP;
+
+    const timeStart = getTaskTime({
+      offsetTop: taskOffsetTop,
+      verticalStep,
+    });
+
+    const timeEnd = getTaskTime({
+      offsetTop: taskOffsetTop + task.heightSpan * MIN_Y_STEP,
+      verticalStep: verticalStep + task.heightSpan,
+    });
+
+    task.left = taskOffsetLeft;
+    task.top = taskOffsetTop;
+    task.time = `${timeStart} - ${timeEnd}`;
+    setTasks(tasksClone);
   };
 
   const onMouseUp = () => {
-    currentDragged.current = null;
-    activeResizer.current = null;
+    draggedIdx.current = -1;
+    activeResizer.current = -1;
   };
 
   return (
     <div
       ref={schedulerGridRef}
       className="scheduler__grid"
-      // onClick={handleAddTask}
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}
@@ -110,8 +141,9 @@ const SchedulerGrid = () => {
       {tasks.map((task, i) => (
         <SchedulerTask
           key={i}
+          index={i}
           task={task}
-          onMouseDown={onMouseDown}
+          onMouseDown={(e) => onMouseDown(e, i)}
           onMouseMove={onMouseMove}
           onMouseUp={onMouseUp}
           activeResizer={activeResizer}

@@ -1,15 +1,19 @@
 const SchedulerTask = (props) => {
-  const { activeResizer, task, ...otherProps } = props || {};
+  const { activeResizer, task, index, ...otherProps } = props || {};
 
   const startResize = (e) => {
     e.stopPropagation();
-    activeResizer.current = e.target;
+    activeResizer.current = index;
   };
 
   return (
     <div
       className="scheduler__task"
-      style={{ left: task.left, top: task.top }}
+      style={{
+        left: `${task.left}px`,
+        top: `${task.top}px`,
+        height: `${task.heightSpan * 16 - 2}px`,
+      }}
       {...otherProps}
     >
       <h4 className="task__name">{task.name}</h4>
