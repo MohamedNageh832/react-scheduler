@@ -1,5 +1,6 @@
-import { LocalStorage } from "../../utils/localStorage";
 import { mouseOffsetX, mouseOffsetY } from "../../utils/mouseOffset";
+import { LocalStorage } from "../../utils/localStorage";
+import { ACTIONS } from "../actions/schedulerActions";
 import {
   MIN_X_STEP,
   MIN_Y_STEP,
@@ -8,38 +9,22 @@ import {
 
 const localStorage = LocalStorage();
 
-const reducer = (state, action) => {
+export const reducer = (state, action) => {
   switch (action.type) {
-    case "mouseDown":
-      return { ...state, ...mouseDown(action) };
-    case "addTask":
-      return {
-        ...state,
-        tasks: [...state.tasks, handleAddTask(action)],
-      };
-    case "startResize":
-      return { ...state, resizerIndex: action.index };
-    case "resizing":
-      return { ...state, tasks: handleResize(action) };
-    case "dragging":
-      return { ...state, tasks: handleDragging(action) };
-    case "mouseUp":
-      return { ...state, currentDraggedIdx: -1, resizerIndex: -1 };
+    case ACTIONS.UPDATE_TASKS:
+      return action.payload.tasks;
+    case ACTIONS.ADD_TASK:
+      return handleAddTask(action.payload);
+    case ACTIONS.START_RESIZE:
+      return { ...state, ...action.payload };
+    case ACTIONS.RESIZING:
+      return [...handleResize(action.payload)];
+    case ACTIONS.DRAGGING:
+      return [...handleDragging(action.payload)];
     default:
       return state;
   }
 };
-
-// ========================== Functions ====================================== //
-
-function mouseDown({ grid, offsetTop, e }) {
-  const mouseOffset = {
-    x: mouseOffsetX(e, grid),
-    y: mouseOffsetY(e, grid) - offsetTop,
-  };
-
-  return { currentDraggedIdx: index, mouseOffset };
-}
 
 function handleAddTask({ e, grid, activeWeek, tasks }) {
   const mouseXPos = mouseOffsetX(e, grid);
@@ -56,7 +41,7 @@ function handleAddTask({ e, grid, activeWeek, tasks }) {
     verticalStep: verticalStep + 1,
   });
 
-  const newTask = {
+  const task = {
     name: "hi",
     top: offsetTop,
     left: itemOffsetLeft,
@@ -65,8 +50,10 @@ function handleAddTask({ e, grid, activeWeek, tasks }) {
     date: activeWeek[horizontalStep].date,
   };
 
-  localStorage.set("tasks7263", [...tasks, newTask]);
-  return newTask;
+  const newTasks = [...tasks, task];
+
+  localStorage.set("tasks7263", newTasks);
+  return newTasks;
 }
 
 function getTaskTime({ offsetTop, verticalStep }) {
@@ -123,7 +110,7 @@ function handleDragging({ e, index, grid, tasks, mouseOffset, activeWeek }) {
 
   if (overflowsTop) mouseYPos = 0;
   else if (isTouchingBottom && mouseIsOutside)
-    mouseYPos = gridHeight - taskHeight;
+    mouseYPos = grid.clientHeight - taskHeight;
 
   const verticalStep = Math.floor(mouseYPos / MIN_Y_STEP);
 
@@ -148,7 +135,3 @@ function handleDragging({ e, index, grid, tasks, mouseOffset, activeWeek }) {
   localStorage.set("tasks7263", tasks);
   return tasks;
 }
-
-// ==================================== Exports ================================== //
-
-export { reducer };

@@ -1,49 +1,66 @@
-import { useCallback, useEffect, useReducer, useRef } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import { reducer } from "../../../services/reducers/schedulerReducer";
 import {
   MIN_X_STEP,
   MIN_Y_STEP,
   AVAILABLE_STEPS,
 } from "../../../services/constants/schedulerConstants";
+import { mouseOffsetX, mouseOffsetY } from "../../../utils/mouseOffset";
 import { compareDates } from "../../../utils/compareDates";
 import { LocalStorage } from "../../../utils/localStorage";
+import { ACTIONS } from "../../../services/actions/schedulerActions";
 import SchedulerTask from "../scheduler-task";
 const localStorage = LocalStorage();
 
+const intialMouseStates = {
+  currentDraggedIdx: -1,
+  resizerIndex: -1,
+  mouseOffset: { x: 0, y: 0 },
+};
+
 const SchedulerGrid = ({ activeWeek }) => {
+  const schedulerGridRef = useRef();
+  const mouseStates = useRef(intialMouseStates);
   const storedTasks = localStorage.get("tasks7263");
   const activeTasks = (el) =>
     activeWeek.some((column) => compareDates(el.date, column.date));
-  const tasks = storedTasks.filter(activeTasks);
-  const schedulerGridRef = useRef();
-  const currentDraggedIdx = useRef();
+  const tasksVisible = storedTasks.filter(activeTasks);
 
-  const intialState = {
-    resizerIndex: -1,
-    tasks,
-    mouseOffset: { x: 0, y: 0 },
-  };
+  const [tasks, dispatch] = useReducer(reducer, tasksVisible);
 
-  const [state, dispatch] = useReducer(reducer, intialState);
+  useEffect(() => {
+    dispatch({ type: ACTIONS.UPDATE_TASKS, payload: { tasks: tasksVisible } });
+  }, [activeWeek]);
 
   const onMouseDown = (e, index) => {
     e.stopPropagation();
 
     if (e.currentTarget === schedulerGridRef.current) {
-      if (state.currentDraggedIdx !== -1 || state.resizerIndex !== -1) return;
+      if (
+        mouseStates.current.currentDraggedIdx !== -1 ||
+        mouseStates.current.resizerIndex !== -1
+      )
+        return;
 
       dispatch({
-        type: "addTask",
-        e,
-        tasks: state.tasks,
-        grid: schedulerGridRef.current,
-        activeWeek,
+        type: ACTIONS.ADD_TASK,
+        payload: {
+          e,
+          tasks: tasks,
+          grid: schedulerGridRef.current,
+          activeWeek,
+        },
       });
-      return;
     }
 
-    dispatch({
-      type: "mouseDown",
+    mouseDown(mouseStates, {
       grid: schedulerGridRef.current,
       e,
       offsetTop: e.currentTarget.offsetTop,
@@ -54,31 +71,33 @@ const SchedulerGrid = ({ activeWeek }) => {
   const onMouseMove = (e) => {
     e.preventDefault();
 
-    console.log(state);
-
-    if (state.resizerIndex !== -1)
+    if (mouseStates.current.resizerIndex !== -1)
       dispatch({
-        tasks,
-        e,
-        grid: schedulerGridRef.current,
-        resizerIndex: state.resizerIndex,
-        type: "resizing",
+        type: ACTIONS.RESIZING,
+        payload: {
+          tasks,
+          e,
+          grid: schedulerGridRef.current,
+          resizerIndex: mouseStates.current.resizerIndex,
+        },
       });
 
-    if (state.currentDraggedIdx === -1) return;
+    if (mouseStates.current.currentDraggedIdx === -1) return;
 
     dispatch({
-      type: "dragging",
-      e,
-      index: state.currentDraggedIdx,
-      grid: schedulerGridRef.current,
-      mouseOffset: state.mouseOffset,
-      tasks: state.tasks,
-      activeWeek,
+      type: ACTIONS.DRAGGING,
+      payload: {
+        e,
+        index: mouseStates.current.currentDraggedIdx,
+        grid: schedulerGridRef.current,
+        mouseOffset: mouseStates.current.mouseOffset,
+        tasks,
+        activeWeek,
+      },
     });
   };
 
-  const onMouseUp = () => dispatch({ type: "mouseUp" });
+  const onMouseUp = () => (mouseStates.current = intialMouseStates);
 
   useEffect(() => {
     window.addEventListener("mousemove", onMouseMove);
@@ -89,8 +108,6 @@ const SchedulerGrid = ({ activeWeek }) => {
       window.removeEventListener("mouseup", onMouseUp);
     };
   }, []);
-
-  const onResize = (index) => dispatch({ type: "startResize", index });
 
   const schedulerTask = useCallback(
     (task, i) => {
@@ -111,11 +128,11 @@ const SchedulerGrid = ({ activeWeek }) => {
           task={taskClone}
           onMouseDown={(e) => onMouseDown(e, i)}
           onMouseMove={onMouseMove}
-          onResize={onResize}
+          mouseStates={mouseStates}
         />
       );
     },
-    [state]
+    [tasks]
   );
 
   return (
@@ -126,9 +143,22 @@ const SchedulerGrid = ({ activeWeek }) => {
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
     >
-      {state.tasks.map((task, i) => schedulerTask(task, i))}
+      {tasks.map((task, i) => schedulerTask(task, i))}
     </div>
   );
 };
+
+function mouseDown(mouseStates, { index, grid, offsetTop, e }) {
+  const mouseOffset = {
+    x: mouseOffsetX(e, grid),
+    y: mouseOffsetY(e, grid) - offsetTop,
+  };
+
+  mouseStates.current = {
+    ...mouseStates.current,
+    currentDraggedIdx: index,
+    mouseOffset,
+  };
+}
 
 export default SchedulerGrid;

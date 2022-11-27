@@ -1,9 +1,11 @@
+import { ACTIONS } from "../../../services/actions/schedulerActions";
+
 const SchedulerTask = (props) => {
-  const { onResize, task, index, ...otherProps } = props || {};
+  const { mouseStates, task, index, ...otherProps } = props || {};
 
   const startResize = (e) => {
     e.stopPropagation();
-    onResize(index);
+    mouseStates.current.resizerIndex = index;
   };
 
   return (
