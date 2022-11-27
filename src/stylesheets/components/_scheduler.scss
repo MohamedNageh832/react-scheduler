@@ -19,7 +19,7 @@
   position: relative;
   overflow: hidden;
   width: var(--grid-cell-width);
-  height: 70px;
+  height: 78px;
   text-align: center;
   user-select: none;
 }
@@ -48,13 +48,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
-  padding: var(--s3);
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   margin: auto;
-  font-size: var(--fs5);
+  font-size: var(--fs4);
   cursor: pointer;
+}
+
+.scheduler__date.active {
+  background-color: var(--blue);
+  color: var(--text-white);
+}
+
+.scheduler__date.active:hover {
+  background-color: var(--blue-hover);
 }
 
 .scheduler__date:hover {
@@ -64,7 +72,7 @@
 // Scheduler sidebar
 .scheduler__sidebar {
   width: 50px;
-  padding-top: 14px;
+  padding-top: 22px;
   padding-right: var(--fs2);
   text-align: end;
 }
@@ -79,6 +87,12 @@
   font-size: 10px;
   line-height: 16px;
   user-select: none;
+}
+
+.scheduler__time.active {
+  border-radius: 5px;
+  background-color: var(--blue);
+  color: var(--text-white);
 }
 
 .scheduler__time::after {

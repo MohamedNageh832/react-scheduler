@@ -337,6 +337,7 @@ template {
 
 html {
   line-height: 1.8;
+  scroll-behavior: smooth;
 }
 
 input {
@@ -420,11 +421,14 @@ th {
   --warning: #ffc107;
   --red: #dc3545;
   --blue: #0d6efd;
+  --blue-hover: #0b5ed7;
   --blue-disabled: #81b2f9;
   --light-blue: #ddebff;
-  --foreground: #fff;
+  --bg-primary: #fff;
   --bg-primary-hover: #f1f3f4;
+  --bg-tooltip: rgba(0, 0, 0, 0.7);
   --text-secondary: #767676;
+  --text-white: #fff;
   --hairline: #dadce0;
   /**/
   --box-shadow1: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
@@ -455,8 +459,13 @@ th {
   }
 }
 .navbar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 2;
   padding: var(--s2);
   border-bottom: 1px solid var(--hairline);
+  background-color: var(--bg-primary);
 }
 
 .navbar__logo {
@@ -465,6 +474,9 @@ th {
 }
 
 .sidebar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 53px;
   flex-shrink: 0;
   width: 300px;
   max-width: 80%;
@@ -517,7 +529,7 @@ th {
   position: relative;
   overflow: hidden;
   width: var(--grid-cell-width);
-  height: 70px;
+  height: 78px;
   text-align: center;
   -webkit-user-select: none;
      -moz-user-select: none;
@@ -549,13 +561,21 @@ th {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
-  padding: var(--s3);
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   margin: auto;
-  font-size: var(--fs5);
+  font-size: var(--fs4);
   cursor: pointer;
+}
+
+.scheduler__date.active {
+  background-color: var(--blue);
+  color: var(--text-white);
+}
+
+.scheduler__date.active:hover {
+  background-color: var(--blue-hover);
 }
 
 .scheduler__date:hover {
@@ -564,7 +584,7 @@ th {
 
 .scheduler__sidebar {
   width: 50px;
-  padding-top: 14px;
+  padding-top: 22px;
   padding-right: var(--fs2);
   text-align: end;
 }
@@ -582,6 +602,12 @@ th {
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
+}
+
+.scheduler__time.active {
+  border-radius: 5px;
+  background-color: var(--blue);
+  color: var(--text-white);
 }
 
 .scheduler__time::after {

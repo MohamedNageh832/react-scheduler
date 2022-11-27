@@ -1,16 +1,16 @@
+import { useState } from "react";
+import { formatDate } from "../../../utils/formatDate";
 import getSchedulerHeader from "../../../utils/getSchedulerHeader";
 
-const SidebarControls = ({ onWeekChange }) => {
-  const updateSchedulerHeader = (value) => {
-    const newHeader = getSchedulerHeader(value);
+const SidebarControls = ({ onChange }) => {
+  const currentDate = new Date();
 
-    console.log(newHeader);
+  const [date, setDate] = useState(formatDate(currentDate));
 
-    onWeekChange(newHeader);
-  };
-
-  const onChange = (e) => {
-    updateSchedulerHeader(e.target.value);
+  const handleChange = (e) => {
+    const newHeader = getSchedulerHeader(new Date(e.target.value));
+    setDate(e.target.value);
+    onChange(newHeader);
   };
 
   return (
@@ -19,7 +19,12 @@ const SidebarControls = ({ onWeekChange }) => {
         <label className="sidebar__label" htmlFor="start-date">
           start from
         </label>
-        <input onChange={onChange} id="start-date" type="date" />
+        <input
+          value={date}
+          onChange={handleChange}
+          id="start-date"
+          type="date"
+        />
       </section>
     </section>
   );

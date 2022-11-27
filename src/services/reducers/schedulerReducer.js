@@ -1,0 +1,154 @@
+import { LocalStorage } from "../../utils/localStorage";
+import { mouseOffsetX, mouseOffsetY } from "../../utils/mouseOffset";
+import {
+  MIN_X_STEP,
+  MIN_Y_STEP,
+  ONE_HOUR_IN_GRID,
+} from "../constants/schedulerConstants";
+
+const localStorage = LocalStorage();
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "mouseDown":
+      return { ...state, ...mouseDown(action) };
+    case "addTask":
+      return {
+        ...state,
+        tasks: [...state.tasks, handleAddTask(action)],
+      };
+    case "startResize":
+      return { ...state, resizerIndex: action.index };
+    case "resizing":
+      return { ...state, tasks: handleResize(action) };
+    case "dragging":
+      return { ...state, tasks: handleDragging(action) };
+    case "mouseUp":
+      return { ...state, currentDraggedIdx: -1, resizerIndex: -1 };
+    default:
+      return state;
+  }
+};
+
+// ========================== Functions ====================================== //
+
+function mouseDown({ grid, offsetTop, e }) {
+  const mouseOffset = {
+    x: mouseOffsetX(e, grid),
+    y: mouseOffsetY(e, grid) - offsetTop,
+  };
+
+  return { currentDraggedIdx: index, mouseOffset };
+}
+
+function handleAddTask({ e, grid, activeWeek, tasks }) {
+  const mouseXPos = mouseOffsetX(e, grid);
+  const mouseYPos = mouseOffsetY(e, grid);
+
+  const horizontalStep = Math.floor(mouseXPos / MIN_X_STEP);
+  const verticalStep = Math.floor(mouseYPos / MIN_Y_STEP);
+
+  const itemOffsetLeft = horizontalStep * MIN_X_STEP;
+  const offsetTop = verticalStep * MIN_Y_STEP;
+  const timeStart = getTaskTime({ offsetTop, verticalStep });
+  const timeEnd = getTaskTime({
+    offsetTop: offsetTop + MIN_Y_STEP,
+    verticalStep: verticalStep + 1,
+  });
+
+  const newTask = {
+    name: "hi",
+    top: offsetTop,
+    left: itemOffsetLeft,
+    heightSpan: 1,
+    time: `${timeStart} - ${timeEnd}`,
+    date: activeWeek[horizontalStep].date,
+  };
+
+  localStorage.set("tasks7263", [...tasks, newTask]);
+  return newTask;
+}
+
+function getTaskTime({ offsetTop, verticalStep }) {
+  const hours = Math.floor(offsetTop / ONE_HOUR_IN_GRID);
+  const minutes = (verticalStep % 4) * 15;
+
+  const hours12 = hours < 13 ? hours : hours - 12;
+  const adjustedHours = hours12 === 0 ? `12` : hours12;
+  const adjustedMinutes = minutes < 15 ? `0${minutes}` : minutes;
+  const adjustedTime = hours < 12 ? "am" : "pm";
+
+  return `${adjustedHours}:${adjustedMinutes} ${adjustedTime}`;
+}
+
+function handleResize({ resizerIndex, e, tasks, grid }) {
+  const task = tasks[resizerIndex];
+
+  let mouseYPos = mouseOffsetY(e, grid) - task.top;
+  if (mouseYPos < 1) mouseYPos = 1;
+  const verticalStep = Math.ceil(mouseYPos / MIN_Y_STEP);
+
+  task.heightSpan = verticalStep;
+  const timeStart = getTaskTime({
+    offsetTop: task.top,
+    verticalStep: task.top,
+  });
+
+  const timeEnd = getTaskTime({
+    offsetTop: task.top + task.heightSpan * MIN_Y_STEP,
+    verticalStep: task.top + task.heightSpan,
+  });
+
+  task.time = `${timeStart} - ${timeEnd}`;
+
+  localStorage.set("tasks7263", tasks);
+  return tasks;
+}
+
+function handleDragging({ e, index, grid, tasks, mouseOffset, activeWeek }) {
+  const task = tasks[index];
+
+  const mouseXPos = mouseOffsetX(e, grid);
+  const horizontalStep = mouseXPos < 1 ? 0 : Math.floor(mouseXPos / MIN_X_STEP);
+
+  const mouseYOffset = mouseOffsetY(e, grid);
+  let mouseYPos = mouseYOffset - mouseOffset.y;
+
+  const overflowsTop = mouseYPos < 1;
+  const taskHeight = task.heightSpan * MIN_Y_STEP;
+  const taskOffsetBottom = task.top + taskHeight;
+  const isTouchingBottom = taskOffsetBottom >= grid.clientHeight;
+  const mouseIsOutside =
+    mouseYOffset + taskHeight - mouseOffset.y > grid.clientHeight;
+
+  if (overflowsTop) mouseYPos = 0;
+  else if (isTouchingBottom && mouseIsOutside)
+    mouseYPos = gridHeight - taskHeight;
+
+  const verticalStep = Math.floor(mouseYPos / MIN_Y_STEP);
+
+  const taskOffsetLeft = horizontalStep * MIN_X_STEP;
+  const taskOffsetTop = verticalStep * MIN_Y_STEP;
+
+  const timeStart = getTaskTime({
+    offsetTop: taskOffsetTop,
+    verticalStep,
+  });
+
+  const timeEnd = getTaskTime({
+    offsetTop: taskOffsetTop + task.heightSpan * MIN_Y_STEP,
+    verticalStep: verticalStep + task.heightSpan,
+  });
+
+  task.left = taskOffsetLeft;
+  task.top = taskOffsetTop;
+  task.date = activeWeek[horizontalStep].date;
+  task.time = `${timeStart} - ${timeEnd}`;
+
+  localStorage.set("tasks7263", tasks);
+  return tasks;
+}
+
+// ==================================== Exports ================================== //
+
+export { reducer };

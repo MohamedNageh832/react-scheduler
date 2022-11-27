@@ -1,18 +1,43 @@
 const SchedulerSidebar = () => {
+  const current24Hour = new Date().getHours();
+  const pmTime = current24Hour > 11;
+  const currentHour =
+    pmTime && current24Hour !== 12 ? current24Hour - 12 : current24Hour;
+
   return (
     <ul className="scheduler__sidebar">
-      <li className="scheduler__time"></li>
+      <li
+        className={`scheduler__time ${
+          !pmTime && currentHour === 0 ? "active" : ""
+        }`}
+      ></li>
 
       {[...Array(11)].map((_, i) => (
-        <li className="scheduler__time" key={i}>
+        <li
+          className={`scheduler__time ${
+            i + 1 === current24Hour ? "active" : ""
+          }`}
+          key={i}
+        >
           {i + 1} am
         </li>
       ))}
 
-      <li className="scheduler__time">12 pm</li>
+      <li
+        className={`scheduler__time ${
+          pmTime && currentHour === 12 ? "active" : ""
+        }`}
+      >
+        12 pm
+      </li>
 
       {[...Array(11)].map((_, i) => (
-        <li className="scheduler__time" key={i}>
+        <li
+          className={`scheduler__time ${
+            pmTime && currentHour === i + 1 ? "active" : ""
+          }`}
+          key={i}
+        >
           {i + 1} pm
         </li>
       ))}

@@ -8,10 +8,11 @@ const mouseOffsetX = (e, parent) => {
 
 const mouseOffsetY = (e, parent) => {
   const windowOffsetY = window.scrollY + e.clientY;
-  const mouseParentOffsetY = windowOffsetY - parent.offsetTop;
 
-  if (parent) return mouseParentOffsetY;
-  else return windowOffsetY;
+  if (parent) {
+    const mouseParentOffsetY = windowOffsetY - parent.offsetTop;
+    return mouseParentOffsetY;
+  } else return windowOffsetY;
 };
 
 export { mouseOffsetX, mouseOffsetY };

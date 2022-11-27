@@ -1,9 +1,9 @@
 const SchedulerTask = (props) => {
-  const { activeResizer, task, index, ...otherProps } = props || {};
+  const { onResize, task, index, ...otherProps } = props || {};
 
   const startResize = (e) => {
     e.stopPropagation();
-    activeResizer.current = index;
+    onResize(index);
   };
 
   return (

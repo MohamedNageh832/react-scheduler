@@ -1,6 +1,10 @@
 .navbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
   padding: var(--s2);
   border-bottom: 1px solid var(--hairline);
+  background-color: var(--bg-primary);
 }
 
 .navbar__logo {
