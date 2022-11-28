@@ -117,7 +117,6 @@ const SchedulerGrid = ({ activeWeek }) => {
           task={taskClone}
           onMouseDown={(e) => onMouseDown(e, i)}
           onMouseMove={onMouseMove}
-          onMouseUp={onMouseUp}
           mouseStates={mouseStates}
         />
       );
@@ -131,6 +130,7 @@ const SchedulerGrid = ({ activeWeek }) => {
       className="scheduler__grid"
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
+      onMouseUp={onMouseUp}
     >
       {tasks.map((task, i) => schedulerTask(task, i))}
     </div>

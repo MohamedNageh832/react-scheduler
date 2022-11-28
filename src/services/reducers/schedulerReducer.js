@@ -36,17 +36,13 @@ function handleAddTask({ e, grid, activeWeek, tasks }) {
   const itemOffsetLeft = horizontalStep * MIN_X_STEP;
   const offsetTop = verticalStep * MIN_Y_STEP;
   const timeStart = getTaskTime({ offsetTop, verticalStep });
-  const timeEnd = getTaskTime({
-    offsetTop: offsetTop + MIN_Y_STEP,
-    verticalStep: verticalStep + 1,
-  });
 
   const task = {
     name: "hi",
     top: offsetTop,
     left: itemOffsetLeft,
     heightSpan: 1,
-    time: `${timeStart} - ${timeEnd}`,
+    time: timeStart,
     date: activeWeek[horizontalStep].date,
   };
 
@@ -86,7 +82,7 @@ function handleResize({ resizerIndex, e, tasks, grid }) {
     verticalStep: task.top + task.heightSpan,
   });
 
-  task.time = `${timeStart} - ${timeEnd}`;
+  task.time = verticalStep > 1 ? `${timeStart} - ${timeEnd}` : timeStart;
 
   localStorage.set("tasks7263", tasks);
   return tasks;
@@ -141,7 +137,7 @@ function handleDragging({ e, index, grid, tasks, mouseOffset, activeWeek }) {
   task.left = taskOffsetLeft;
   task.top = taskOffsetTop;
   task.date = activeWeek[horizontalStep].date;
-  task.time = `${timeStart} - ${timeEnd}`;
+  task.time = task.taskHeight > 1 ? `${timeStart} - ${timeEnd}` : timeStart;
 
   localStorage.set("tasks7263", tasks);
   return tasks;

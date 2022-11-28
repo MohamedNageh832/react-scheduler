@@ -135,12 +135,12 @@
   gap: var(--s1);
   width: var(--max-task-width);
   height: var(--min-task-height);
-  padding: var(--s1);
+  padding: 1px 2px;
   border-radius: 5px;
   background-color: var(--blue);
   color: #fff;
   font-size: var(--fs1);
-  line-height: 7px;
+  line-height: 12px;
   cursor: pointer;
 }
 
