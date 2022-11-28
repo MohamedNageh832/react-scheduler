@@ -1,17 +1,6 @@
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from "react";
+import { useCallback, useEffect, useReducer, useRef } from "react";
 import { reducer } from "../../../services/reducers/schedulerReducer";
-import {
-  MIN_X_STEP,
-  MIN_Y_STEP,
-  AVAILABLE_STEPS,
-} from "../../../services/constants/schedulerConstants";
+import { MIN_X_STEP } from "../../../services/constants/schedulerConstants";
 import { mouseOffsetX, mouseOffsetY } from "../../../utils/mouseOffset";
 import { compareDates } from "../../../utils/compareDates";
 import { LocalStorage } from "../../../utils/localStorage";
@@ -31,7 +20,7 @@ const SchedulerGrid = ({ activeWeek }) => {
   const storedTasks = localStorage.get("tasks7263");
   const activeTasks = (el) =>
     activeWeek.some((column) => compareDates(el.date, column.date));
-  const tasksVisible = storedTasks.filter(activeTasks);
+  const tasksVisible = storedTasks ? storedTasks.filter(activeTasks) : [];
 
   const [tasks, dispatch] = useReducer(reducer, tasksVisible);
 
@@ -137,7 +126,6 @@ const SchedulerGrid = ({ activeWeek }) => {
 
   return (
     <div
-      style={{ height: MIN_Y_STEP * AVAILABLE_STEPS }} // TODO: turn to css
       ref={schedulerGridRef}
       className="scheduler__grid"
       onMouseDown={onMouseDown}

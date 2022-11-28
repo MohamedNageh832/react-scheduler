@@ -1,4 +1,4 @@
-import { ACTIONS } from "../../../services/actions/schedulerActions";
+import { MIN_Y_STEP } from "../../../services/constants/schedulerConstants";
 
 const SchedulerTask = (props) => {
   const { mouseStates, task, index, ...otherProps } = props || {};
@@ -14,7 +14,7 @@ const SchedulerTask = (props) => {
       style={{
         left: `${task.left}px`,
         top: `${task.top}px`,
-        height: `${task.heightSpan * 16 - 2}px`,
+        height: `${task.heightSpan * MIN_Y_STEP - 2}px`,
       }}
       {...otherProps}
     >

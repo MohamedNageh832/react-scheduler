@@ -626,9 +626,11 @@ th {
 }
 
 .scheduler__grid {
+  --min-y-step: 16px;
+  --available-y-steps: 96;
   position: relative;
-  width: 100%;
-  height: calc(100% - 70px);
+  width: calc(var(--grid-cell-width) * 7);
+  height: calc(var(--min-y-step) * var(--available-y-steps));
   background-size: var(--grid-cell-width) var(--grid-cell-height);
   background-image: linear-gradient(to right, var(--hairline) 1px, transparent 1px), linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
 }

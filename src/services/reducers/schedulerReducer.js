@@ -95,8 +95,19 @@ function handleResize({ resizerIndex, e, tasks, grid }) {
 function handleDragging({ e, index, grid, tasks, mouseOffset, activeWeek }) {
   const task = tasks[index];
 
-  const mouseXPos = mouseOffsetX(e, grid);
-  const horizontalStep = mouseXPos < 1 ? 0 : Math.floor(mouseXPos / MIN_X_STEP);
+  let mouseXPos = mouseOffsetX(e, grid);
+
+  const overflowsLeft = mouseXPos < 1;
+  const taskWidth = MIN_X_STEP;
+  const taskOffsetRight = task.left + taskWidth;
+  const isTouchingRight = taskOffsetRight >= grid.clientWidth;
+  const mouseXIsOutside = mouseXPos + taskWidth > grid.clientWidth;
+
+  if (overflowsLeft) mouseXPos = 0;
+  else if (isTouchingRight && mouseXIsOutside)
+    mouseXPos = grid.clientWidth - taskWidth;
+
+  const horizontalStep = Math.floor(mouseXPos / MIN_X_STEP);
 
   const mouseYOffset = mouseOffsetY(e, grid);
   let mouseYPos = mouseYOffset - mouseOffset.y;
@@ -105,11 +116,11 @@ function handleDragging({ e, index, grid, tasks, mouseOffset, activeWeek }) {
   const taskHeight = task.heightSpan * MIN_Y_STEP;
   const taskOffsetBottom = task.top + taskHeight;
   const isTouchingBottom = taskOffsetBottom >= grid.clientHeight;
-  const mouseIsOutside =
+  const mouseYIsOutside =
     mouseYOffset + taskHeight - mouseOffset.y > grid.clientHeight;
 
   if (overflowsTop) mouseYPos = 0;
-  else if (isTouchingBottom && mouseIsOutside)
+  else if (isTouchingBottom && mouseYIsOutside)
     mouseYPos = grid.clientHeight - taskHeight;
 
   const verticalStep = Math.floor(mouseYPos / MIN_Y_STEP);
