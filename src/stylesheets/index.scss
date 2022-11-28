@@ -8,6 +8,8 @@
 @use "./components/navbar";
 @use "./components/sidebar";
 @use "./components/scheduler";
+@use "./components/overlay";
+@use "./components/buttons";
 
 // Layout
 @use "./layout/utilities";

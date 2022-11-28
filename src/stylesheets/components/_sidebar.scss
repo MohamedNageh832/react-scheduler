@@ -1,12 +1,15 @@
 .sidebar {
   position: sticky;
   top: 53px;
+  left: 0;
   flex-shrink: 0;
+  z-index: 2;
   width: 300px;
   max-width: 80%;
   height: calc(100vh - 53px);
   padding: var(--s3);
   border-right: 1px solid var(--hairline);
+  background-color: var(--bg-primary);
   font-size: var(--fs2);
 }
 

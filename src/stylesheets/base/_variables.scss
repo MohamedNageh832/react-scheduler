@@ -6,7 +6,7 @@
   --s5: 2rem;
 
   /*Border radius*/
-  --mainBR: 5px;
+  --bRadius1: 5px;
 
   /* Font sizes */
   --fs1: 12px;
@@ -18,22 +18,22 @@
 
   /* TODO: edit these */
   --borderColor: #d9d9d9;
-  --grey-100: #f4f4f4;
-  --grey-200: #e8e8e8;
-  --grey-400: #bbb;
   --green: #00b894;
   --green-disabled: #80dbc9;
   --warning: #ffc107;
   --red: #dc3545;
-  --blue: #0d6efd;
-  --blue-hover: #0b5ed7;
   --blue-disabled: #81b2f9;
   --light-blue: #ddebff;
 
   // Primarily used colors
+  --blue: #0d6efd;
+  --blue-hover: #0b5ed7;
+  --light-grey: #f4f4f4;
+  --light-grey-hover: #e8e8e8;
   --bg-primary: #fff;
   --bg-primary-hover: #f1f3f4;
   --bg-tooltip: rgba(0, 0, 0, 0.7);
+  --bg-overlay: rgba(255, 255, 255, 0.7);
   --text-secondary: #767676;
   --text-white: #fff;
   --hairline: #dadce0;

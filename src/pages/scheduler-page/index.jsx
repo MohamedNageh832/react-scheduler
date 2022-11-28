@@ -8,6 +8,7 @@ import SchedulerGrid from "../../components/scheduler/scheduler-grid";
 import getSchedulerHeader from "../../utils/getSchedulerHeader";
 import SidebarLinks from "../../components/sidebar/sidebar-links";
 import SidebarControls from "../../components/sidebar/sidebar-controls";
+import { SchedulerProvider } from "../../services/context/schedulerContext";
 
 const SchedulerPage = () => {
   const [schedulerWeek, setSchedulerWeek] = useState(
@@ -22,13 +23,15 @@ const SchedulerPage = () => {
           <SidebarLinks />
           <SidebarControls onChange={setSchedulerWeek} />
         </Sidebar>
-        <Scheduler>
-          <SchedulerSidebar />
-          <section className="scheduler__body">
-            <SchedulerHeader activeWeek={schedulerWeek} />
-            <SchedulerGrid activeWeek={schedulerWeek} />
-          </section>
-        </Scheduler>
+        <SchedulerProvider>
+          <Scheduler>
+            <SchedulerSidebar />
+            <section className="scheduler__body">
+              <SchedulerHeader activeWeek={schedulerWeek} />
+              <SchedulerGrid activeWeek={schedulerWeek} />
+            </section>
+          </Scheduler>
+        </SchedulerProvider>
       </section>
     </>
   );

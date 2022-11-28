@@ -1,11 +1,24 @@
-import { MIN_Y_STEP } from "../../../services/constants/schedulerConstants";
+import {
+  MIN_X_STEP,
+  MIN_Y_STEP,
+} from "../../../services/constants/schedulerConstants";
+import { compareDates } from "../../../utils/compareDates";
 
 const SchedulerTask = (props) => {
-  const { mouseStates, task, index, ...otherProps } = props || {};
+  const { onResize, task, activeWeek, index, ...otherProps } = props || {};
+
+  task.left = -MIN_X_STEP;
+
+  const correspondingDate = activeWeek.filter((el) =>
+    compareDates(el.date, task.date)
+  )[0];
+
+  const horizontalStep = activeWeek.indexOf(correspondingDate);
+  task.left = horizontalStep * MIN_X_STEP;
 
   const startResize = (e) => {
     e.stopPropagation();
-    mouseStates.current.resizerIndex = index;
+    onResize(e, index);
   };
 
   return (
@@ -19,7 +32,7 @@ const SchedulerTask = (props) => {
       {...otherProps}
     >
       <h4 className="task__name">{task.name}</h4>
-      <p className="task__time">{task.time}</p>
+      <span className="task__time">{task.time}</span>
       <span className="task__resizer" onMouseDown={startResize}></span>
     </div>
   );
