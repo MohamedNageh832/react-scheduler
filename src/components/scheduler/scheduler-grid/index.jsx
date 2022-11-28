@@ -1,54 +1,24 @@
-import { useEffect, useRef, useState } from "react";
-import { compareDates } from "../../../utils/compareDates";
-import SchedulerTask from "../scheduler-task";
+import { useEffect, useRef } from "react";
 import useScheduler from "../../../services/context/schedulerContext";
-import { LocalStorage } from "../../../utils/localStorage";
 import EditTask from "./edit-task";
+import SchedulerTasks from "../scheduler-tasks";
 
-const localStorage = LocalStorage();
-
-const storedTasks = localStorage.get("tasks7263");
-
-const SchedulerGrid = ({ activeWeek }) => {
+const SchedulerGrid = () => {
   const schedulerGridRef = useRef();
-  const [editIndex, setEditIndex] = useState(-1);
   const {
     state,
-    handleUpdateTasks,
-    handleMouseDown,
     handleAddTask,
     handleResizing,
     handleDragging,
     handleMouseUp,
   } = useScheduler();
 
-  const activeTasks = (el) =>
-    activeWeek.some((column) => compareDates(el.date, column.date));
-  const tasksVisible = storedTasks ? storedTasks.filter(activeTasks) : [];
-
-  useEffect(() => {
-    handleUpdateTasks(tasksVisible);
-  }, [activeWeek]);
-
   const handleGridMouseDown = (e) => {
+    if (e.target !== schedulerGridRef.current) return;
+
     handleAddTask({
       e,
       grid: schedulerGridRef.current,
-      activeWeek,
-    });
-
-    setEditIndex(state.tasks.length - 1);
-  };
-
-  const handleStartDragging = (e, index) => {
-    e.stopPropagation();
-
-    handleMouseDown({
-      type: "dragging",
-      grid: schedulerGridRef.current,
-      e,
-      offsetTop: e.currentTarget.offsetTop,
-      index,
     });
   };
 
@@ -70,7 +40,6 @@ const SchedulerGrid = ({ activeWeek }) => {
       index: state.currentDraggedIdx,
       grid: schedulerGridRef.current,
       mouseOffset: state.mouseOffset,
-      activeWeek,
     });
   };
 
@@ -84,49 +53,14 @@ const SchedulerGrid = ({ activeWeek }) => {
     };
   }, [state]);
 
-  const onResize = (e, index) => {
-    handleMouseDown({
-      type: "resizing",
-      grid: schedulerGridRef.current,
-      e,
-      offsetTop: e.currentTarget.offsetTop,
-      index,
-    });
-  };
-
-  const handleEditTask = ({ name }) => {
-    const tasks = state.tasks;
-    const task = tasks[editIndex];
-    task.name = name;
-
-    localStorage.set("tasks7263", tasks);
-    handleUpdateTasks(tasks);
-    setEditIndex(-1);
-  };
-
-  const handleCancelEdit = () => {
-    setEditIndex(-1);
-  };
-
   return (
     <div
       ref={schedulerGridRef}
       className="scheduler__grid"
       onMouseDown={handleGridMouseDown}
     >
-      {state.tasks.map((task, i) => (
-        <SchedulerTask
-          key={i}
-          index={i}
-          task={task}
-          activeWeek={activeWeek}
-          onMouseDown={(e) => handleStartDragging(e, i)}
-          onResize={onResize}
-        />
-      ))}
-      {editIndex > -1 && (
-        <EditTask onSubmit={handleEditTask} onCancel={handleCancelEdit} />
-      )}
+      <SchedulerTasks grid={schedulerGridRef.current} />
+      {state.activeEdit && <EditTask />}
     </div>
   );
 };

@@ -1,8 +1,13 @@
 import { useEffect, useRef, useState } from "react";
+import useScheduler from "../../../../services/context/schedulerContext";
+import { LocalStorage } from "../../../../utils/localStorage";
 
-const EditTask = ({ onSubmit, onCancel }) => {
+const localStorage = LocalStorage();
+
+const EditTask = () => {
+  const { state, handleUpdateTasks } = useScheduler();
   const focusMe = useRef();
-  const [name, setName] = useState("");
+  const [name, setName] = useState(state.activeEdit.name);
 
   useEffect(() => {
     focusMe.current.focus();
@@ -12,15 +17,26 @@ const EditTask = ({ onSubmit, onCancel }) => {
     setName(e.target.value);
   };
 
+  const handleCancel = () => {
+    handleUpdateTasks(state.tasks);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    onSubmit({ name });
+    const tasks = state.tasks;
+    const task = state.activeEdit;
+    const taskIndex = tasks.indexOf(task);
+    task.name = name;
+    tasks[taskIndex] = task;
+
+    localStorage.set("tasks7263", tasks);
+    handleUpdateTasks(tasks);
   };
 
   return (
     <>
-      <div className="overlay"></div>
+      <div className="overlay" onClick={handleCancel}></div>
       <form onSubmit={handleSubmit} className="scheduler__popup">
         <label className="scheduler__label">Enter task</label>
         <input
@@ -36,7 +52,7 @@ const EditTask = ({ onSubmit, onCancel }) => {
             Save
           </button>
           <button
-            onClick={onCancel}
+            onClick={handleCancel}
             className="btn btn--secondary"
             type="button"
           >

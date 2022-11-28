@@ -161,7 +161,6 @@
 
 .scheduler__task {
   position: absolute;
-  overflow: hidden;
   width: var(--max-task-width);
   height: var(--min-task-height);
   padding: 1px 2px;
@@ -173,13 +172,21 @@
   cursor: pointer;
 }
 
+.scheduler__task:hover {
+  z-index: 4;
+}
+
 .task__name {
   display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
   margin-right: var(--s1);
+  pointer-events: none;
 }
 
 .task__time {
   font-size: 10px;
+  pointer-events: none;
 }
 
 .task__resizer {
@@ -189,4 +196,24 @@
   width: 100%;
   height: 8px;
   cursor: s-resize;
+}
+
+.task__controls {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  opacity: 0;
+  width: 40px;
+  text-align: center;
+  transition: all 0.25s ease-in-out;
+}
+
+.scheduler__task:hover .task__controls {
+  left: -40px;
+  opacity: 1;
+}
+
+.task__btn {
+  padding: var(--s2);
+  background-color: var(--light-grey-hover);
 }

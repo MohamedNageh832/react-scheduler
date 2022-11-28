@@ -1,9 +1,12 @@
+import useScheduler from "../../../services/context/schedulerContext";
 import SchedulerColumn from "./scheduler-column";
 
-const SchedulerHeader = ({ activeWeek }) => {
+const SchedulerHeader = () => {
+  const { state } = useScheduler();
+
   return (
     <header className="scheduler__header">
-      {activeWeek.map((item, i) => (
+      {state.activeWeek.map((item, i) => (
         <SchedulerColumn key={i} data={item} />
       ))}
     </header>

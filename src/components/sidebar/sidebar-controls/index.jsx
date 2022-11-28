@@ -1,8 +1,10 @@
 import { useState } from "react";
+import useScheduler from "../../../services/context/schedulerContext";
 import { formatDate } from "../../../utils/formatDate";
 import getSchedulerHeader from "../../../utils/getSchedulerHeader";
 
-const SidebarControls = ({ onChange }) => {
+const SidebarControls = ({}) => {
+  const { changeActiveWeek } = useScheduler();
   const currentDate = new Date();
 
   const [date, setDate] = useState(formatDate(currentDate));
@@ -10,7 +12,7 @@ const SidebarControls = ({ onChange }) => {
   const handleChange = (e) => {
     const newHeader = getSchedulerHeader(new Date(e.target.value));
     setDate(e.target.value);
-    onChange(newHeader);
+    changeActiveWeek(newHeader);
   };
 
   return (

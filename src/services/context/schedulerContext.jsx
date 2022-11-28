@@ -1,4 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
+import { compareDates } from "../../utils/compareDates";
 import { LocalStorage } from "../../utils/localStorage";
 import { mouseOffsetX, mouseOffsetY } from "../../utils/mouseOffset";
 import { ACTIONS } from "../actions/schedulerActions";
@@ -15,12 +16,26 @@ const SchedulerContext = createContext(intialState);
 export const SchedulerProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, intialState);
 
+  const editTask = (task) => {
+    dispatch({ type: ACTIONS.EDIT_TASK, payload: { task } });
+  };
+
+  const changeActiveWeek = (activeWeek) => {
+    const activeTasks = (el) =>
+      activeWeek.some((column) => compareDates(el.date, column.date));
+    const tasks = intialState.tasks.filter(activeTasks);
+    dispatch({
+      type: ACTIONS.CHANGE_ACTIVE_WEEK,
+      payload: { activeWeek, tasks },
+    });
+  };
+
   const handleUpdateTasks = (tasks) => {
     dispatch({ type: ACTIONS.UPDATE_TASKS, payload: { tasks } });
   };
 
   const handleMouseDown = (payload) => {
-    const { type, index, grid, offsetTop, e, activeWeek } = payload || {};
+    const { type, index, grid, offsetTop, e } = payload || {};
     const mouseOffset = {
       x: mouseOffsetX(e, grid),
       y: mouseOffsetY(e, grid) - offsetTop,
@@ -41,7 +56,7 @@ export const SchedulerProvider = ({ children }) => {
     }
   };
 
-  const handleAddTask = ({ e, grid, activeWeek }) => {
+  const handleAddTask = ({ e, grid }) => {
     const mouseXPos = mouseOffsetX(e, grid);
     const mouseYPos = mouseOffsetY(e, grid);
 
@@ -58,13 +73,13 @@ export const SchedulerProvider = ({ children }) => {
       left: itemOffsetLeft,
       heightSpan: 1,
       time: timeStart,
-      date: activeWeek[horizontalStep].date,
+      date: state.activeWeek[horizontalStep].date,
     };
 
-    const newTasks = [...state.tasks, task];
+    const tasks = [...state.tasks, task];
 
-    localStorage.set("tasks7263", newTasks);
-    dispatch({ type: ACTIONS.ADD_TASK, payload: { tasks: newTasks } });
+    localStorage.set("tasks7263", tasks);
+    dispatch({ type: ACTIONS.ADD_TASK, payload: { tasks, activeEdit: task } });
   };
 
   const handleResizing = ({ resizerIndex, e, grid }) => {
@@ -92,7 +107,7 @@ export const SchedulerProvider = ({ children }) => {
   };
 
   const handleDragging = (payload) => {
-    const { e, index, grid, mouseOffset, activeWeek } = payload || {};
+    const { e, index, grid, mouseOffset } = payload || {};
     const task = state.tasks[index];
 
     let mouseXPos = mouseOffsetX(e, grid);
@@ -140,7 +155,7 @@ export const SchedulerProvider = ({ children }) => {
 
     task.left = taskOffsetLeft;
     task.top = taskOffsetTop;
-    task.date = activeWeek[horizontalStep].date;
+    task.date = state.activeWeek[horizontalStep].date;
     task.time = task.heightSpan > 1 ? `${timeStart} - ${timeEnd}` : timeStart;
 
     localStorage.set("tasks7263", state.tasks);
@@ -151,6 +166,8 @@ export const SchedulerProvider = ({ children }) => {
 
   const value = {
     state,
+    editTask,
+    changeActiveWeek,
     handleUpdateTasks,
     handleMouseDown,
     handleAddTask,

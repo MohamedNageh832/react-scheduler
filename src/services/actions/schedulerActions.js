@@ -6,4 +6,6 @@ export const ACTIONS = {
   START_DRAGGING: "start-dragging",
   DRAGGING: "dragging",
   MOUSE_UP: "mouse-up",
+  CHANGE_ACTIVE_WEEK: "change-active-week",
+  EDIT_TASK: "edit-task",
 };
