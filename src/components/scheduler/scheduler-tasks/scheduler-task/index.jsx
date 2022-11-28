@@ -31,6 +31,7 @@ const SchedulerTask = (props) => {
     <div
       className="scheduler__task"
       style={{
+        backgroundColor: task.color,
         left: `${task.left}px`,
         top: `${task.top}px`,
         height: `${task.heightSpan * MIN_Y_STEP - 2}px`,

@@ -125,6 +125,7 @@ export const SchedulerProvider = ({ children }) => {
     const horizontalStep = Math.floor(mouseXPos / MIN_X_STEP);
 
     const mouseYOffset = mouseOffsetY(e, grid);
+
     let mouseYPos = mouseYOffset - mouseOffset.y;
 
     const overflowsTop = mouseYPos < 1;

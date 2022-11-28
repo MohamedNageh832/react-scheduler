@@ -415,12 +415,13 @@ th {
   --borderColor: #d9d9d9;
   --green: #00b894;
   --green-disabled: #80dbc9;
-  --warning: #ffc107;
   --red: #dc3545;
   --blue-disabled: #81b2f9;
   --light-blue: #ddebff;
+  --yellow: #ffc107;
   --blue: #0d6efd;
   --blue-hover: #0b5ed7;
+  --grey: #bbb;
   --light-grey: #f4f4f4;
   --light-grey-hover: #e8e8e8;
   --bg-primary: #fff;
@@ -638,7 +639,7 @@ th {
   background-image: linear-gradient(to right, var(--hairline) 1px, transparent 1px), linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
 }
 
-.scheduler__popup {
+.scheduler__edit-task {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -647,28 +648,65 @@ th {
   flex-direction: column;
   align-items: flex-start;
   gap: var(--s2);
+  z-index: 3;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  width: 300px;
+  max-width: 95%;
   padding: var(--s3);
   border-radius: var(--bRadius1);
   background-color: var(--bg-primary);
 }
 
-.scheduler__label {
+.edit-task__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  width: 100%;
+}
+
+.edit-task__title {
   font-weight: 500;
   font-size: var(--fs4);
+}
+
+.edit-task__label {
+  font-size: var(--fs3);
+}
+
+.edit-task__colors-holder {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+.edit-task__color {
+  width: 30px;
+  height: 30px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.edit-task__color.active {
+  border-color: var(--grey);
 }
 
 .scheduler__input {
   border-radius: var(--bRadius1);
 }
 
-.popup__controls {
+.edit-task__controls {
   display: flex;
   gap: var(--s2);
 }
 
 .scheduler__task {
   position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--s1);
   width: var(--max-task-width);
   height: var(--min-task-height);
   padding: 1px 2px;
@@ -688,12 +726,12 @@ th {
   display: inline-block;
   max-width: 100%;
   overflow: hidden;
-  margin-right: var(--s1);
   pointer-events: none;
 }
 
 .task__time {
   font-size: 10px;
+  line-height: 10px;
   pointer-events: none;
 }
 
@@ -732,6 +770,7 @@ th {
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 3;
   background-color: var(--bg-overlay);
   -webkit-animation: fadeIn 0.25s ease-in-out forwards;
           animation: fadeIn 0.25s ease-in-out forwards;
@@ -788,25 +827,25 @@ th {
 }
 
 .fs-1 {
-  font-size: var(--1);
+  font-size: var(--s1);
 }
 
 .fs-2 {
-  font-size: var(--2);
+  font-size: var(--s2);
 }
 
 .fs-3 {
-  font-size: var(--3);
+  font-size: var(--s3);
 }
 
 .fs-4 {
-  font-size: var(--4);
+  font-size: var(--s4);
 }
 
 .fs-5 {
-  font-size: var(--5);
+  font-size: var(--s5);
 }
 
 .fs-6 {
-  font-size: var(--6);
+  font-size: var(--s6);
 }/*# sourceMappingURL=index.css.map */

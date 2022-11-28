@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import useScheduler from "../../../services/context/schedulerContext";
 import EditTask from "./edit-task";
 import SchedulerTasks from "../scheduler-tasks";

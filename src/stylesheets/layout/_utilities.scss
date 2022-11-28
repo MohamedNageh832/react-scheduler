@@ -9,6 +9,6 @@
 
 @for $i from 1 through 6 {
   .fs-#{$i} {
-    font-size: var(--#{$i});
+    font-size: var(--s#{$i});
   }
 }

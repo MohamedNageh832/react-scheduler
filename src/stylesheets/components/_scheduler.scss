@@ -126,9 +126,9 @@
     linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
 }
 
-// Scheduler popup
+// Scheduler edit task
 
-.scheduler__popup {
+.scheduler__edit-task {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -137,22 +137,54 @@
   flex-direction: column;
   align-items: flex-start;
   gap: var(--s2);
+  z-index: 3;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  width: 300px;
+  max-width: 95%;
   padding: var(--s3);
   border-radius: var(--bRadius1);
   background-color: var(--bg-primary);
 }
 
-.scheduler__label {
+.edit-task__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  width: 100%;
+}
+
+.edit-task__title {
   font-weight: 500;
   font-size: var(--fs4);
+}
+
+.edit-task__label {
+  font-size: var(--fs3);
+}
+
+.edit-task__colors-holder {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+.edit-task__color {
+  width: 30px;
+  height: 30px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.edit-task__color.active {
+  border-color: var(--grey);
 }
 
 .scheduler__input {
   border-radius: var(--bRadius1);
 }
 
-.popup__controls {
+.edit-task__controls {
   display: flex;
   gap: var(--s2);
 }
@@ -161,6 +193,11 @@
 
 .scheduler__task {
   position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--s1);
   width: var(--max-task-width);
   height: var(--min-task-height);
   padding: 1px 2px;
@@ -180,12 +217,12 @@
   display: inline-block;
   max-width: 100%;
   overflow: hidden;
-  margin-right: var(--s1);
   pointer-events: none;
 }
 
 .task__time {
   font-size: 10px;
+  line-height: 10px;
   pointer-events: none;
 }
 

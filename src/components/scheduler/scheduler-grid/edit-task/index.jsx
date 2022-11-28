@@ -1,20 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import useScheduler from "../../../../services/context/schedulerContext";
 import { LocalStorage } from "../../../../utils/localStorage";
+import ChooseColor from "./choose-color";
+import Controls from "./controls";
+import EnterTask from "./enter-task";
 
 const localStorage = LocalStorage();
 
 const EditTask = () => {
   const { state, handleUpdateTasks } = useScheduler();
-  const focusMe = useRef();
-  const [name, setName] = useState(state.activeEdit.name);
-
-  useEffect(() => {
-    focusMe.current.focus();
+  const [values, setValues] = useState({
+    name: state.activeEdit.name,
+    color: "#0D6EFD",
   });
 
   const onChange = (e) => {
-    setName(e.target.value);
+    setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleCancel = () => {
@@ -27,7 +28,9 @@ const EditTask = () => {
     const tasks = state.tasks;
     const task = state.activeEdit;
     const taskIndex = tasks.indexOf(task);
-    task.name = name;
+    task.name = values.name;
+    task.color = values.color;
+
     tasks[taskIndex] = task;
 
     localStorage.set("tasks7263", tasks);
@@ -37,28 +40,11 @@ const EditTask = () => {
   return (
     <>
       <div className="overlay" onClick={handleCancel}></div>
-      <form onSubmit={handleSubmit} className="scheduler__popup">
-        <label className="scheduler__label">Enter task</label>
-        <input
-          ref={focusMe}
-          value={name}
-          onChange={onChange}
-          className="scheduler__input"
-          type="text"
-        />
+      <form onSubmit={handleSubmit} className="scheduler__edit-task">
+        <EnterTask value={values.name} onChange={onChange} />
+        <ChooseColor values={values} setValues={setValues} />
         <p className="scheduler__task-time"></p>
-        <section className="popup__controls">
-          <button className="btn btn--blue" type="submit">
-            Save
-          </button>
-          <button
-            onClick={handleCancel}
-            className="btn btn--secondary"
-            type="button"
-          >
-            Cancel
-          </button>
-        </section>
+        <Controls handleCancel={handleCancel} />
       </form>
     </>
   );

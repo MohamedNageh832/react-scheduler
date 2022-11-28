@@ -16,7 +16,7 @@ const SchedulerTasks = ({ grid }) => {
 
   const handleDragging = (e, index) => {
     e.stopPropagation();
-    if (!e.target.classList.contains(".scheduler__task")) return;
+    if (!e.currentTarget) return;
 
     handleMouseDown({
       type: "dragging",
