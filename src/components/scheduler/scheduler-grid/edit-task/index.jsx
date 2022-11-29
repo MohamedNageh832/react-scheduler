@@ -8,7 +8,7 @@ import EnterTask from "./enter-task";
 const localStorage = LocalStorage();
 
 const EditTask = () => {
-  const { state, handleUpdateTasks } = useScheduler();
+  const { state, handleUpdateTasks, cancelCreateTask } = useScheduler();
   const [values, setValues] = useState({
     name: state.activeEdit.name,
     color: "#0D6EFD",
@@ -19,7 +19,8 @@ const EditTask = () => {
   };
 
   const handleCancel = () => {
-    handleUpdateTasks(state.tasks);
+    if (state.creatingTask) cancelCreateTask();
+    else handleUpdateTasks(state.tasks);
   };
 
   const handleSubmit = (e) => {

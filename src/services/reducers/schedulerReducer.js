@@ -34,8 +34,10 @@ export const reducer = (state, action) => {
     case ACTIONS.ADD_GRID_ELEMENT:
       return { ...state, ...payload };
     case ACTIONS.UPDATE_TASKS:
-      return { ...state, ...payload, creatingTask: false, activeEdit: null };
+      return { ...state, ...payload };
     case ACTIONS.CREATE_TASK:
+      return { ...state, ...payload };
+    case ACTIONS.CANCEL_CREATE_TASK:
       return { ...state, ...payload };
     case ACTIONS.EDIT_TASK:
       return { ...state, activeEdit: payload.task };

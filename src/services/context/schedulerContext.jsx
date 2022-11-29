@@ -31,7 +31,10 @@ export const SchedulerProvider = ({ children }) => {
   };
 
   const handleUpdateTasks = (tasks) => {
-    dispatch({ type: ACTIONS.UPDATE_TASKS, payload: { tasks } });
+    dispatch({
+      type: ACTIONS.UPDATE_TASKS,
+      payload: { tasks, creatingTask: false, activeEdit: null },
+    });
   };
 
   const addGridElement = (node) => {
@@ -50,7 +53,7 @@ export const SchedulerProvider = ({ children }) => {
 
     const itemOffsetLeft = horizontalStep * MIN_X_STEP;
     const offsetTop = verticalStep * MIN_Y_STEP;
-    const timeStart = getTaskTime({ offsetTop, verticalStep });
+    const timeStart = getTaskTime({ offsetTop });
 
     const task = {
       name: "no title",
@@ -63,10 +66,18 @@ export const SchedulerProvider = ({ children }) => {
 
     const tasks = [...state.tasks, task];
 
-    localStorage.set("tasks7263", tasks);
     dispatch({
       type: ACTIONS.CREATE_TASK,
       payload: { tasks, resizerIndex: tasks.length - 1, creatingTask: true },
+    });
+  };
+
+  const cancelCreateTask = () => {
+    const tasks = state.tasks.slice(0, state.tasks.length - 1);
+
+    dispatch({
+      type: ACTIONS.CANCEL_CREATE_TASK,
+      payload: { tasks, creatingTask: false, activeEdit: null },
     });
   };
 
@@ -95,26 +106,20 @@ export const SchedulerProvider = ({ children }) => {
   };
 
   const handleResizing = (e) => {
-    if (state.resizerIndex === -1) return;
-
     const task = state.tasks[state.resizerIndex];
 
     let mouseYPos = mouseOffsetY(e, state.gridElement) - task.top;
     if (mouseYPos < 1) mouseYPos = 1;
-    const verticalStep = Math.ceil(mouseYPos / MIN_Y_STEP);
+    const heightSpan = Math.ceil(mouseYPos / MIN_Y_STEP);
 
-    task.heightSpan = verticalStep;
-    const timeStart = getTaskTime({
-      offsetTop: task.top,
-      verticalStep: task.top,
-    });
+    task.heightSpan = heightSpan;
+    const timeStart = getTaskTime({ offsetTop: task.top });
 
     const timeEnd = getTaskTime({
-      offsetTop: task.top + task.heightSpan * MIN_Y_STEP,
-      verticalStep: task.top + task.heightSpan,
+      offsetTop: task.top + heightSpan * MIN_Y_STEP,
     });
 
-    task.time = verticalStep > 1 ? `${timeStart} - ${timeEnd}` : timeStart;
+    task.time = heightSpan > 1 ? `${timeStart} - ${timeEnd}` : timeStart;
 
     localStorage.set("tasks7263", state.tasks);
     dispatch({ type: ACTIONS.RESIZING, payload: { tasks: state.tasks } });
@@ -156,14 +161,10 @@ export const SchedulerProvider = ({ children }) => {
     const taskOffsetLeft = horizontalStep * MIN_X_STEP;
     const taskOffsetTop = verticalStep * MIN_Y_STEP;
 
-    const timeStart = getTaskTime({
-      offsetTop: taskOffsetTop,
-      verticalStep,
-    });
+    const timeStart = getTaskTime({ offsetTop: taskOffsetTop });
 
     const timeEnd = getTaskTime({
       offsetTop: taskOffsetTop + task.heightSpan * MIN_Y_STEP,
-      verticalStep: verticalStep + task.heightSpan,
     });
 
     task.left = taskOffsetLeft;
@@ -194,6 +195,7 @@ export const SchedulerProvider = ({ children }) => {
     startDragging,
     addGridElement,
     createTask,
+    cancelCreateTask,
     handleResizing,
     handleDragging,
     handleMouseUp,
@@ -206,9 +208,9 @@ export const SchedulerProvider = ({ children }) => {
   );
 };
 
-function getTaskTime({ offsetTop, verticalStep }) {
+function getTaskTime({ offsetTop }) {
   const hours = Math.floor(offsetTop / ONE_HOUR_IN_GRID);
-  const minutes = (verticalStep % 4) * 15;
+  const minutes = Math.floor((offsetTop % ONE_HOUR_IN_GRID) / 15) * 15;
 
   const hours12 = hours < 13 ? hours : hours - 12;
   const adjustedHours = hours12 === 0 ? `12` : hours12;
