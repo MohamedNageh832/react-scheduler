@@ -21,6 +21,7 @@ export const intialState = {
   activeWeek,
   activeEdit: null,
   gridElement: null,
+  creatingTask: false,
   ...intialMouseStates,
 };
 
@@ -29,33 +30,25 @@ export const reducer = (state, action) => {
 
   switch (type) {
     case ACTIONS.CHANGE_ACTIVE_WEEK:
-      return { ...state, activeWeek: payload.activeWeek, tasks: payload.tasks };
+      return { ...state, ...payload };
     case ACTIONS.ADD_GRID_ELEMENT:
-      return { ...state, gridElement: payload.gridElement };
+      return { ...state, ...payload };
     case ACTIONS.UPDATE_TASKS:
-      return { ...state, tasks: payload.tasks, activeEdit: null };
+      return { ...state, ...payload, creatingTask: false, activeEdit: null };
     case ACTIONS.CREATE_TASK:
-      return { ...state, tasks: payload.tasks, activeEdit: payload.activeEdit };
+      return { ...state, ...payload };
     case ACTIONS.EDIT_TASK:
       return { ...state, activeEdit: payload.task };
     case ACTIONS.START_RESIZING:
-      return {
-        ...state,
-        mouseOffset: payload.mouseOffset,
-        resizerIndex: payload.index,
-      };
+      return { ...state, ...payload };
     case ACTIONS.RESIZING:
       return { ...state, tasks: payload.tasks };
     case ACTIONS.START_DRAGGING:
-      return {
-        ...state,
-        mouseOffset: payload.mouseOffset,
-        currentDraggedIdx: payload.index,
-      };
+      return { ...state, ...payload };
     case ACTIONS.DRAGGING:
       return { ...state, tasks: payload.tasks };
     case ACTIONS.MOUSE_UP:
-      return { ...state, ...intialMouseStates };
+      return { ...state, ...payload, ...intialMouseStates };
     default:
       return state;
   }

@@ -20,9 +20,9 @@ const SchedulerGrid = () => {
       createTask(e);
     };
 
-    window.addEventListener("click", handleGridMouseDown);
+    window.addEventListener("mousedown", handleGridMouseDown);
     return () => {
-      window.removeEventListener("click", handleGridMouseDown);
+      window.removeEventListener("mousedown", handleGridMouseDown);
     };
   }, [state]);
 

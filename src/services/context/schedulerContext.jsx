@@ -66,11 +66,11 @@ export const SchedulerProvider = ({ children }) => {
     localStorage.set("tasks7263", tasks);
     dispatch({
       type: ACTIONS.CREATE_TASK,
-      payload: { tasks, activeEdit: task },
+      payload: { tasks, resizerIndex: tasks.length - 1, creatingTask: true },
     });
   };
 
-  const startResizing = (e, index) => {
+  const startResizing = (e, resizerIndex) => {
     const mouseOffset = {
       x: mouseOffsetX(e, state.gridELement),
       y: mouseOffsetY(e, state.gridELement) - e.target.offsetTop,
@@ -78,11 +78,11 @@ export const SchedulerProvider = ({ children }) => {
 
     dispatch({
       type: ACTIONS.START_RESIZING,
-      payload: { mouseOffset, index },
+      payload: { mouseOffset, resizerIndex },
     });
   };
 
-  const startDragging = (e, index) => {
+  const startDragging = (e, currentDraggedIdx) => {
     const mouseOffset = {
       x: mouseOffsetX(e, state.gridElement),
       y: mouseOffsetY(e, state.gridElement) - e.target.offsetTop,
@@ -90,7 +90,7 @@ export const SchedulerProvider = ({ children }) => {
 
     dispatch({
       type: ACTIONS.START_DRAGGING,
-      payload: { mouseOffset, index },
+      payload: { mouseOffset, currentDraggedIdx },
     });
   };
 
@@ -175,7 +175,15 @@ export const SchedulerProvider = ({ children }) => {
     dispatch({ type: ACTIONS.DRAGGING, payload: { tasks: state.tasks } });
   };
 
-  const handleMouseUp = () => dispatch({ type: ACTIONS.MOUSE_UP });
+  const handleMouseUp = () => {
+    if (state.creatingTask) {
+      const task = state.tasks[state.tasks.length - 1];
+      const activeEdit = task;
+
+      dispatch({ type: ACTIONS.MOUSE_UP, payload: { activeEdit } });
+    }
+    dispatch({ type: ACTIONS.MOUSE_UP, payload: {} });
+  };
 
   const value = {
     state,
