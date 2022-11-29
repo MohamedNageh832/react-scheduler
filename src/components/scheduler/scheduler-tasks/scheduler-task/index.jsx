@@ -11,11 +11,8 @@ const SchedulerTask = ({ task, index }) => {
   const { state, editTask, startResizing, startDragging } = useScheduler();
 
   useEffect(() => {
-    const closeMenu = (e) => {
-      if (openContextMenu) {
-        e.stopImmediatePropagation();
-        setOpenContextMenu(false);
-      }
+    const closeMenu = () => {
+      if (openContextMenu) setOpenContextMenu(false);
     };
 
     window.addEventListener("mousedown", closeMenu);
@@ -51,6 +48,8 @@ const SchedulerTask = ({ task, index }) => {
 
   const startResize = (e) => {
     e.stopPropagation();
+
+    setOpenContextMenu(false);
     startResizing(e, index);
   };
 
@@ -61,24 +60,27 @@ const SchedulerTask = ({ task, index }) => {
   };
 
   return (
-    <div
-      className="scheduler__task"
-      onMouseDown={handleStartDragging}
-      onContextMenu={handleContextMenu}
-      style={taskStyles}
-    >
-      <h4 className="task__name">{task.name}</h4>
-      <span className="task__time">{task.time}</span>
-      <span className="task__resizer" onMouseDown={startResize}></span>
+    <>
+      <div
+        className="scheduler__task"
+        onMouseDown={handleStartDragging}
+        onContextMenu={handleContextMenu}
+        style={taskStyles}
+      >
+        <h4 className="task__name">{task.name}</h4>
+        <span className="task__time">{task.time}</span>
+        <span className="task__resizer" onMouseDown={startResize}></span>
 
-      {openContextMenu && (
-        <section className="task__controls">
-          <button className="task__btn" onMouseDown={handleEdit}>
-            edit
-          </button>
-        </section>
-      )}
-    </div>
+        {openContextMenu && (
+          <section className="task__controls">
+            <button className="task__btn" onMouseDown={handleEdit}>
+              edit
+            </button>
+          </section>
+        )}
+      </div>
+      {openContextMenu && <div className="overlay overlay--transparent"></div>}
+    </>
   );
 };
 
