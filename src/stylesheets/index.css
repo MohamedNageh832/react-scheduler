@@ -750,14 +750,19 @@ th {
 .task__controls {
   position: absolute;
   top: 0;
-  left: -40px;
+  left: -45px;
   width: 40px;
+  background-color: var(--bg-primary);
   text-align: center;
 }
 
 .task__btn {
   padding: var(--s2);
-  background-color: var(--light-grey-hover);
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 2px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+}
+
+.task__btn:hover {
+  background-color: var(--bg-primary-hover);
 }
 
 .overlay {
