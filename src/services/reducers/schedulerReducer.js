@@ -20,6 +20,7 @@ export const intialState = {
   tasks,
   activeWeek,
   activeEdit: null,
+  gridElement: null,
   ...intialMouseStates,
 };
 
@@ -29,9 +30,11 @@ export const reducer = (state, action) => {
   switch (type) {
     case ACTIONS.CHANGE_ACTIVE_WEEK:
       return { ...state, activeWeek: payload.activeWeek, tasks: payload.tasks };
+    case ACTIONS.ADD_GRID_ELEMENT:
+      return { ...state, gridElement: payload.gridElement };
     case ACTIONS.UPDATE_TASKS:
       return { ...state, tasks: payload.tasks, activeEdit: null };
-    case ACTIONS.ADD_TASK:
+    case ACTIONS.CREATE_TASK:
       return { ...state, tasks: payload.tasks, activeEdit: payload.activeEdit };
     case ACTIONS.EDIT_TASK:
       return { ...state, activeEdit: payload.task };

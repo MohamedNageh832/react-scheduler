@@ -1,65 +1,34 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import useScheduler from "../../../services/context/schedulerContext";
 import EditTask from "./edit-task";
 import SchedulerTasks from "../scheduler-tasks";
 
 const SchedulerGrid = () => {
   const schedulerGridRef = useRef();
-  const {
-    state,
-    handleAddTask,
-    handleResizing,
-    handleDragging,
-    handleMouseUp,
-  } = useScheduler();
-
-  const handleGridMouseDown = (e) => {
-    if (e.target !== schedulerGridRef.current) return;
-
-    handleAddTask({
-      e,
-      grid: schedulerGridRef.current,
-    });
-  };
-
-  const onMouseMove = (e) => {
-    e.preventDefault();
-
-    if (state.resizerIndex !== -1) {
-      handleResizing({
-        e,
-        grid: schedulerGridRef.current,
-        resizerIndex: state.resizerIndex,
-      });
-    }
-
-    if (state.currentDraggedIdx === -1) return;
-
-    handleDragging({
-      e,
-      index: state.currentDraggedIdx,
-      grid: schedulerGridRef.current,
-      mouseOffset: state.mouseOffset,
-    });
-  };
+  const { state, addGridElement, createTask } = useScheduler();
 
   useEffect(() => {
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+    if (schedulerGridRef.current) {
+      addGridElement(schedulerGridRef.current);
+    }
+  }, [schedulerGridRef.current]);
 
+  useEffect(() => {
+    const handleGridMouseDown = (e) => {
+      if (e.target !== schedulerGridRef.current) return;
+
+      createTask(e);
+    };
+
+    window.addEventListener("click", handleGridMouseDown);
     return () => {
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("click", handleGridMouseDown);
     };
   }, [state]);
 
   return (
-    <div
-      ref={schedulerGridRef}
-      className="scheduler__grid"
-      onMouseDown={handleGridMouseDown}
-    >
-      <SchedulerTasks grid={schedulerGridRef.current} />
+    <div ref={schedulerGridRef} className="scheduler__grid">
+      <SchedulerTasks />
       {state.activeEdit && <EditTask />}
     </div>
   );

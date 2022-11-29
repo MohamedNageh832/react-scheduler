@@ -1,6 +1,7 @@
 export const ACTIONS = {
+  ADD_GRID_ELEMENT: "add-grid-element",
   UPDATE_TASKS: "update-tasks",
-  ADD_TASK: "add-task",
+  CREATE_TASK: "create-task",
   START_RESIZING: "start-resizing",
   RESIZING: "resizing",
   START_DRAGGING: "start-dragging",

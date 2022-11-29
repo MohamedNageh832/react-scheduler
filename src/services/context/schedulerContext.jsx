@@ -34,31 +34,16 @@ export const SchedulerProvider = ({ children }) => {
     dispatch({ type: ACTIONS.UPDATE_TASKS, payload: { tasks } });
   };
 
-  const handleMouseDown = (payload) => {
-    const { type, index, grid, offsetTop, e } = payload || {};
-    const mouseOffset = {
-      x: mouseOffsetX(e, grid),
-      y: mouseOffsetY(e, grid) - offsetTop,
-    };
-
-    if (type === "dragging") {
-      dispatch({
-        type: ACTIONS.START_DRAGGING,
-        payload: { mouseOffset, index },
-      });
-    } else if (type === "resizing") {
-      dispatch({
-        type: ACTIONS.START_RESIZING,
-        payload: { mouseOffset, index },
-      });
-    } else {
-      throw Error(`Error: type:"${type}" is not Recognized as mouseDown event`);
-    }
+  const addGridElement = (node) => {
+    dispatch({
+      type: ACTIONS.ADD_GRID_ELEMENT,
+      payload: { gridElement: node },
+    });
   };
 
-  const handleAddTask = ({ e, grid }) => {
-    const mouseXPos = mouseOffsetX(e, grid);
-    const mouseYPos = mouseOffsetY(e, grid);
+  const createTask = (e) => {
+    const mouseXPos = mouseOffsetX(e, state.gridElement);
+    const mouseYPos = mouseOffsetY(e, state.gridElement);
 
     const horizontalStep = Math.floor(mouseXPos / MIN_X_STEP);
     const verticalStep = Math.floor(mouseYPos / MIN_Y_STEP);
@@ -79,13 +64,42 @@ export const SchedulerProvider = ({ children }) => {
     const tasks = [...state.tasks, task];
 
     localStorage.set("tasks7263", tasks);
-    dispatch({ type: ACTIONS.ADD_TASK, payload: { tasks, activeEdit: task } });
+    dispatch({
+      type: ACTIONS.CREATE_TASK,
+      payload: { tasks, activeEdit: task },
+    });
   };
 
-  const handleResizing = ({ resizerIndex, e, grid }) => {
-    const task = state.tasks[resizerIndex];
+  const startResizing = (e, index) => {
+    const mouseOffset = {
+      x: mouseOffsetX(e, state.gridELement),
+      y: mouseOffsetY(e, state.gridELement) - e.target.offsetTop,
+    };
 
-    let mouseYPos = mouseOffsetY(e, grid) - task.top;
+    dispatch({
+      type: ACTIONS.START_RESIZING,
+      payload: { mouseOffset, index },
+    });
+  };
+
+  const startDragging = (e, index) => {
+    const mouseOffset = {
+      x: mouseOffsetX(e, state.gridElement),
+      y: mouseOffsetY(e, state.gridElement) - e.target.offsetTop,
+    };
+
+    dispatch({
+      type: ACTIONS.START_DRAGGING,
+      payload: { mouseOffset, index },
+    });
+  };
+
+  const handleResizing = (e) => {
+    if (state.resizerIndex === -1) return;
+
+    const task = state.tasks[state.resizerIndex];
+
+    let mouseYPos = mouseOffsetY(e, state.gridElement) - task.top;
     if (mouseYPos < 1) mouseYPos = 1;
     const verticalStep = Math.ceil(mouseYPos / MIN_Y_STEP);
 
@@ -106,9 +120,9 @@ export const SchedulerProvider = ({ children }) => {
     dispatch({ type: ACTIONS.RESIZING, payload: { tasks: state.tasks } });
   };
 
-  const handleDragging = (payload) => {
-    const { e, index, grid, mouseOffset } = payload || {};
-    const task = state.tasks[index];
+  const handleDragging = (e) => {
+    const task = state.tasks[state.currentDraggedIdx];
+    const grid = state.gridElement;
 
     let mouseXPos = mouseOffsetX(e, grid);
 
@@ -122,23 +136,21 @@ export const SchedulerProvider = ({ children }) => {
     else if (isTouchingRight && mouseXIsOutside)
       mouseXPos = grid.clientWidth - taskWidth;
 
-    const horizontalStep = Math.floor(mouseXPos / MIN_X_STEP);
-
     const mouseYOffset = mouseOffsetY(e, grid);
-
-    let mouseYPos = mouseYOffset - mouseOffset.y;
+    let mouseYPos = mouseYOffset - state.mouseOffset.y;
 
     const overflowsTop = mouseYPos < 1;
     const taskHeight = task.heightSpan * MIN_Y_STEP;
     const taskOffsetBottom = task.top + taskHeight;
     const isTouchingBottom = taskOffsetBottom >= grid.clientHeight;
     const mouseYIsOutside =
-      mouseYOffset + taskHeight - mouseOffset.y > grid.clientHeight;
+      mouseYOffset + taskHeight - state.mouseOffset.y > grid.clientHeight;
 
     if (overflowsTop) mouseYPos = 0;
     else if (isTouchingBottom && mouseYIsOutside)
       mouseYPos = grid.clientHeight - taskHeight;
 
+    const horizontalStep = Math.floor(mouseXPos / MIN_X_STEP);
     const verticalStep = Math.floor(mouseYPos / MIN_Y_STEP);
 
     const taskOffsetLeft = horizontalStep * MIN_X_STEP;
@@ -170,8 +182,10 @@ export const SchedulerProvider = ({ children }) => {
     editTask,
     changeActiveWeek,
     handleUpdateTasks,
-    handleMouseDown,
-    handleAddTask,
+    startResizing,
+    startDragging,
+    addGridElement,
+    createTask,
     handleResizing,
     handleDragging,
     handleMouseUp,

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   MIN_X_STEP,
   MIN_Y_STEP,
@@ -5,48 +6,78 @@ import {
 import useScheduler from "../../../../services/context/schedulerContext";
 import { compareDates } from "../../../../utils/compareDates";
 
-const SchedulerTask = (props) => {
-  const { editTask } = useScheduler();
-  const { onResize, task, activeWeek, index, ...otherProps } = props || {};
+const SchedulerTask = ({ task, index }) => {
+  const [openContextMenu, setOpenContextMenu] = useState(false);
+  const { state, editTask, startResizing, startDragging } = useScheduler();
 
-  task.left = -MIN_X_STEP;
+  useEffect(() => {
+    const closeMenu = (e) => {
+      if (openContextMenu) {
+        e.stopImmediatePropagation();
+        setOpenContextMenu(false);
+      }
+    };
 
-  const correspondingDate = activeWeek.filter((el) =>
+    window.addEventListener("mousedown", closeMenu);
+
+    return () => window.addEventListener("mousedown", closeMenu);
+  }, [openContextMenu]);
+
+  const correspondingDate = state.activeWeek.filter((el) =>
     compareDates(el.date, task.date)
   )[0];
 
-  const horizontalStep = activeWeek.indexOf(correspondingDate);
+  const horizontalStep = state.activeWeek.indexOf(correspondingDate);
   task.left = horizontalStep * MIN_X_STEP;
+
+  const taskStyles = {
+    backgroundColor: task.color,
+    left: `${task.left}px`,
+    top: `${task.top}px`,
+    height: `${task.heightSpan * MIN_Y_STEP - 2}px`,
+  };
+
+  const handleStartDragging = (e) => {
+    if (!e.target.classList.contains("scheduler__task")) return;
+
+    startDragging(e, index);
+  };
+
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+
+    setOpenContextMenu(true);
+  };
 
   const startResize = (e) => {
     e.stopPropagation();
-    onResize(e, index);
+    startResizing(e, index);
   };
 
-  const handleEdit = () => {
+  const handleEdit = (e) => {
+    e.stopPropagation();
+
     editTask(task);
   };
 
   return (
     <div
       className="scheduler__task"
-      style={{
-        backgroundColor: task.color,
-        left: `${task.left}px`,
-        top: `${task.top}px`,
-        height: `${task.heightSpan * MIN_Y_STEP - 2}px`,
-      }}
-      {...otherProps}
+      onMouseDown={handleStartDragging}
+      onContextMenu={handleContextMenu}
+      style={taskStyles}
     >
       <h4 className="task__name">{task.name}</h4>
       <span className="task__time">{task.time}</span>
       <span className="task__resizer" onMouseDown={startResize}></span>
 
-      <section className="task__controls">
-        <button className="task__btn" onClick={handleEdit}>
-          edit
-        </button>
-      </section>
+      {openContextMenu && (
+        <section className="task__controls">
+          <button className="task__btn" onMouseDown={handleEdit}>
+            edit
+          </button>
+        </section>
+      )}
     </div>
   );
 };

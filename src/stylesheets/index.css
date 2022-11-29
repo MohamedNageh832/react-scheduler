@@ -724,8 +724,10 @@ th {
 
 .task__name {
   display: inline-block;
-  max-width: 100%;
   overflow: hidden;
+  min-width: 50%;
+  max-width: 100%;
+  text-align: center;
   pointer-events: none;
 }
 
@@ -747,16 +749,9 @@ th {
 .task__controls {
   position: absolute;
   top: 0;
-  left: 0px;
-  opacity: 0;
+  left: -40px;
   width: 40px;
   text-align: center;
-  transition: all 0.25s ease-in-out;
-}
-
-.scheduler__task:hover .task__controls {
-  left: -40px;
-  opacity: 1;
 }
 
 .task__btn {
