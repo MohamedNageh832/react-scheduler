@@ -47,17 +47,11 @@ const SchedulerTask = ({ task, index }) => {
   };
 
   const startResize = (e) => {
-    e.stopPropagation();
-
     setOpenContextMenu(false);
     startResizing(e, index);
   };
 
-  const handleEdit = (e) => {
-    e.stopPropagation();
-
-    editTask(task);
-  };
+  const handleEdit = () => editTask(task);
 
   return (
     <>
