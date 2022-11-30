@@ -2,11 +2,13 @@ import { useEffect, useRef } from "react";
 
 const EnterTask = ({ value, onChange }) => {
   const focusMeRef = useRef();
-  const name = value === "no title" ? "" : value;
 
   useEffect(() => {
     if (!focusMeRef.current) return;
     focusMeRef.current.focus();
+
+    if (value !== "no title") return;
+    focusMeRef.current.select();
   }, [focusMeRef.current]);
 
   return (
@@ -15,7 +17,7 @@ const EnterTask = ({ value, onChange }) => {
       <input
         ref={focusMeRef}
         name="name"
-        value={name}
+        value={value}
         onChange={onChange}
         className="input"
         type="text"
