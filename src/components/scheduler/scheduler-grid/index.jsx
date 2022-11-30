@@ -15,7 +15,6 @@ const SchedulerGrid = () => {
 
   useEffect(() => {
     const handleGridMouseDown = (e) => {
-      e.preventDefault();
       if (e.target !== schedulerGridRef.current) return;
 
       createTask(e);
@@ -28,7 +27,11 @@ const SchedulerGrid = () => {
   }, [state]);
 
   return (
-    <div ref={schedulerGridRef} className="scheduler__grid">
+    <div
+      ref={schedulerGridRef}
+      className="scheduler__grid"
+      onContextMenu={(e) => e.preventDefault()}
+    >
       <SchedulerTasks />
       {state.activeEdit && <EditTask />}
     </div>
