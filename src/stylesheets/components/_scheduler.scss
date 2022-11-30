@@ -6,6 +6,7 @@
   --time-margin-top: 48px; // grid-cell-height - grid-cell-height / 4
   display: flex;
   padding: var(--s3);
+  background-color: var(--bg-three);
 }
 
 // Scheduler header
@@ -36,7 +37,7 @@
 
 .scheduler__day,
 .scheduler__date {
-  color: var(--text-secondary);
+  color: var(--text-one-secondary);
 }
 
 .scheduler__day {
@@ -65,7 +66,7 @@
 }
 
 .scheduler__date:hover {
-  background-color: var(--bg-primary-hover);
+  background-color: var(--bg-three-hover);
 }
 
 // Scheduler sidebar
@@ -82,7 +83,7 @@
   height: 16px; // grid-cell-height / 4
   padding-right: 4px;
   margin-top: var(--time-margin-top);
-  color: var(--text-secondary);
+  color: var(--text-one-secondary);
   font-size: 10px;
   line-height: 16px;
   user-select: none;
@@ -91,7 +92,7 @@
 .scheduler__time.active {
   border-radius: 5px;
   background-color: var(--blue);
-  color: var(--text-white);
+  color: var(--text-two);
 }
 
 .scheduler__time::after {
@@ -108,7 +109,6 @@
 
 .scheduler__body {
   height: 100%;
-  background-color: #fff;
 }
 
 .scheduler__grid {
@@ -195,14 +195,15 @@
   cursor: s-resize;
 }
 
-.task__controls {
+.task__context-menu {
   position: absolute;
   top: 90%;
   left: 0;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 2px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
   padding: var(--s1);
   border-radius: var(--bRadius1);
-  background-color: var(--bg-primary);
+  background-color: var(--bg-one);
+  color: var(--text-one);
   text-align: center;
 }
 
@@ -211,5 +212,5 @@
 }
 
 .task__btn:hover {
-  background-color: var(--bg-primary-hover);
+  background-color: var(--bg-one-hover);
 }

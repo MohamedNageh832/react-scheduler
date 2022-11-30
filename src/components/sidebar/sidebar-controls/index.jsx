@@ -1,33 +1,11 @@
-import { useState } from "react";
-import useScheduler from "../../../services/context/schedulerContext";
-import { formatDate } from "../../../utils/formatDate";
-import getSchedulerHeader from "../../../utils/getSchedulerHeader";
+import ChooseDate from "./choose-date";
+import ChooseTheme from "./choose-theme";
 
-const SidebarControls = ({}) => {
-  const { changeActiveWeek } = useScheduler();
-  const currentDate = new Date();
-
-  const [date, setDate] = useState(formatDate(currentDate));
-
-  const handleChange = (e) => {
-    const newHeader = getSchedulerHeader(new Date(e.target.value));
-    setDate(e.target.value);
-    changeActiveWeek(newHeader);
-  };
-
+const SidebarControls = () => {
   return (
     <section className="sidebar__controls">
-      <section>
-        <label className="sidebar__label" htmlFor="start-date">
-          start from
-        </label>
-        <input
-          value={date}
-          onChange={handleChange}
-          id="start-date"
-          type="date"
-        />
-      </section>
+      <ChooseDate />
+      <ChooseTheme />
     </section>
   );
 };

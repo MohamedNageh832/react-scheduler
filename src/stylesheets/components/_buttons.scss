@@ -6,7 +6,7 @@
 
 .btn--blue {
   background-color: var(--blue);
-  color: var(--text-white);
+  color: #fff;
 }
 
 .btn--blue:hover {
@@ -15,7 +15,7 @@
 
 .btn--secondary {
   background-color: var(--light-grey);
-  color: var(--text-secondary);
+  color: var(--text-one-secondary);
 }
 
 .btn--secondary:hover {

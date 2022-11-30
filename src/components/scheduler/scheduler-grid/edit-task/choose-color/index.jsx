@@ -1,14 +1,14 @@
 const colors = [
-  "#0D6EFD",
-  "#D50000",
-  "#E67C73",
-  "#33B679",
-  "#0B8043",
-  "#039BE5",
-  "#3F51B5",
-  "#7986CB",
-  "#8E24AA",
-  "#616161",
+  "blue",
+  "red",
+  "light-red",
+  "green",
+  "dark-green",
+  "light-blue",
+  "dark-blue",
+  "light-purple",
+  "purple",
+  "dark",
 ];
 
 const ChooseColor = ({ values, setValues }) => {
@@ -27,7 +27,7 @@ const ChooseColor = ({ values, setValues }) => {
             className={`edit-task__color ${
               values.color === color ? "active" : ""
             }`}
-            style={{ backgroundColor: color }}
+            style={{ backgroundColor: `var(--${color})` }}
           ></p>
         ))}
       </section>

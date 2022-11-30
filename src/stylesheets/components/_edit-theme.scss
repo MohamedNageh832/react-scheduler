@@ -1,0 +1,62 @@
+.edit-theme {
+  width: 500px;
+}
+
+.themes-holder {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  width: 100%;
+}
+
+.theme {
+  width: 140px;
+  height: 90px;
+  border: 1px solid var(--hairline);
+  cursor: pointer;
+}
+
+.theme--light {
+  --theme-header: #212529;
+  --theme-sidebar: #fff;
+  --theme-grid: #f4f4f4;
+}
+
+.theme--all-white {
+  --theme-header: #fff;
+  --theme-sidebar: #fff;
+  --theme-grid: #fff;
+}
+
+.theme--dark {
+  --theme-header: #192734;
+  --theme-sidebar: #242526;
+  --theme-grid: #121212;
+}
+
+.theme--indigo {
+  --theme-header: #060410;
+  --theme-sidebar: #1a1437;
+  --theme-grid: #372b5e;
+}
+
+.theme__header {
+  height: 8px;
+  background-color: var(--theme-header);
+}
+
+.theme__sidebar,
+.theme__grid {
+  display: inline-block;
+  height: 82px;
+}
+
+.theme__sidebar {
+  width: 30%;
+  background-color: var(--theme-sidebar);
+}
+
+.theme__grid {
+  width: 70%;
+  background-color: var(--theme-grid);
+}

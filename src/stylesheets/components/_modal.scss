@@ -9,8 +9,8 @@
   max-width: 95%;
   padding: var(--s3);
   border-radius: var(--bRadius1);
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+  background-color: var(--bg-one);
+  color: var(--text-one);
   font-size: var(--fs2);
 }
 
@@ -22,7 +22,7 @@
 
 .modal__text {
   margin-bottom: var(--s3);
-  color: var(--text-secondary);
+  color: var(--text-one-secondary);
 }
 
 .modal__controls {

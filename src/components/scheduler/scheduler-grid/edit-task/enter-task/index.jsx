@@ -19,7 +19,6 @@ const EnterTask = ({ value, onChange }) => {
         name="name"
         value={value}
         onChange={onChange}
-        className="input"
         type="text"
       />
     </section>

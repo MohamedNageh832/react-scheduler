@@ -6,6 +6,8 @@
   margin-top: var(--s2);
 }
 
-.input {
-  border-radius: var(--bRadius1);
+.form-group--inline {
+  display: inline-flex;
+  margin-right: var(--s3);
+  gap: var(--s1);
 }

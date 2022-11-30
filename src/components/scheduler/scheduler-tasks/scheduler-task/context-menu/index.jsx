@@ -11,7 +11,7 @@ const ContextMenu = ({ setControls, index }) => {
     setControls((prev) => ({ ...prev, confirm: true }));
 
   return (
-    <section className="task__controls">
+    <section className="task__context-menu">
       <button className="task__btn" onMouseDown={handleEdit}>
         Edit
       </button>
