@@ -72,11 +72,14 @@ export const SchedulerProvider = ({ children }) => {
     });
   };
 
-  const cancelCreateTask = () => {
-    const tasks = state.tasks.slice(0, state.tasks.length - 1);
+  const deleteTask = (index) => {
+    const tasks = state.tasks;
+
+    tasks.splice(index, 1);
+    localStorage.set("tasks7263", tasks);
 
     dispatch({
-      type: ACTIONS.CANCEL_CREATE_TASK,
+      type: ACTIONS.DELETE_TASK,
       payload: { tasks, creatingTask: false, activeEdit: null },
     });
   };
@@ -195,7 +198,7 @@ export const SchedulerProvider = ({ children }) => {
     startDragging,
     addGridElement,
     createTask,
-    cancelCreateTask,
+    deleteTask,
     handleResizing,
     handleDragging,
     handleMouseUp,

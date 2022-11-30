@@ -1,0 +1,32 @@
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  width: 300px;
+  max-width: 95%;
+  padding: var(--s3);
+  border-radius: var(--bRadius1);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: var(--fs2);
+}
+
+.modal__title {
+  margin-bottom: var(--s2);
+  font-weight: 500;
+  font-size: var(--fs3);
+}
+
+.modal__text {
+  margin-bottom: var(--s3);
+  color: var(--text-secondary);
+}
+
+.modal__controls {
+  display: flex;
+  gap: var(--s2);
+  margin-top: var(--s3);
+}

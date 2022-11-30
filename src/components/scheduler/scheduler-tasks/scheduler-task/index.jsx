@@ -5,20 +5,26 @@ import {
 } from "../../../../services/constants/schedulerConstants";
 import useScheduler from "../../../../services/context/schedulerContext";
 import { compareDates } from "../../../../utils/compareDates";
+import Confirm from "./confirm";
+import ContextMenu from "./context-menu";
 
 const SchedulerTask = ({ task, index }) => {
-  const [openContextMenu, setOpenContextMenu] = useState(false);
-  const { state, editTask, startResizing, startDragging } = useScheduler();
+  const [controls, setControls] = useState({
+    openContextMenu: false,
+    confirm: false,
+  });
+  const { state, startResizing, startDragging } = useScheduler();
 
   useEffect(() => {
     const closeMenu = () => {
-      if (openContextMenu) setOpenContextMenu(false);
+      if (controls.openContextMenu)
+        setControls((prev) => ({ ...prev, openContextMenu: false }));
     };
 
     window.addEventListener("mousedown", closeMenu);
 
     return () => window.addEventListener("mousedown", closeMenu);
-  }, [openContextMenu]);
+  }, [controls.openContextMenu]);
 
   const correspondingDate = state.activeWeek.filter((el) =>
     compareDates(el.date, task.date)
@@ -43,15 +49,13 @@ const SchedulerTask = ({ task, index }) => {
   const handleContextMenu = (e) => {
     e.preventDefault();
 
-    setOpenContextMenu(true);
+    setControls((prev) => ({ ...prev, openContextMenu: true }));
   };
 
   const startResize = (e) => {
-    setOpenContextMenu(false);
+    setControls((prev) => ({ ...prev, openContextMenu: false }));
     startResizing(e, index);
   };
-
-  const handleEdit = () => editTask(task);
 
   return (
     <>
@@ -64,16 +68,14 @@ const SchedulerTask = ({ task, index }) => {
         <h4 className="task__name">{task.name}</h4>
         <span className="task__time">{task.time}</span>
         <span className="task__resizer" onMouseDown={startResize}></span>
-
-        {openContextMenu && (
-          <section className="task__controls">
-            <button className="task__btn" onMouseDown={handleEdit}>
-              edit
-            </button>
-          </section>
+        {controls.openContextMenu && (
+          <ContextMenu setControls={setControls} index={index} />
         )}
       </div>
-      {openContextMenu && <div className="overlay overlay--transparent"></div>}
+      {controls.confirm && <Confirm setControls={setControls} index={index} />}
+      {controls.openContextMenu && (
+        <div className="overlay overlay--transparent"></div>
+      )}
     </>
   );
 };

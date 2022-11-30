@@ -1,0 +1,11 @@
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  width: 100%;
+  margin-top: var(--s2);
+}
+
+.input {
+  border-radius: var(--bRadius1);
+}

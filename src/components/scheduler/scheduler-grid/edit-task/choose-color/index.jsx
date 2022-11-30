@@ -17,8 +17,8 @@ const ChooseColor = ({ values, setValues }) => {
   };
 
   return (
-    <section className="edit-task__group">
-      <label className="edit-task__label">Choose color</label>
+    <section className="form-group">
+      <label className="label">Choose color</label>
       <section className="edit-task__colors-holder">
         {colors.map((color, i) => (
           <p

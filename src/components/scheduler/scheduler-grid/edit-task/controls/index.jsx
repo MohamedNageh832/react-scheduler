@@ -1,6 +1,6 @@
 const Controls = ({ handleCancel }) => {
   return (
-    <section className="edit-task__controls">
+    <section className="modal__controls">
       <button className="btn btn--blue" type="submit">
         Save
       </button>

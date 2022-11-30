@@ -15,6 +15,7 @@ const SchedulerGrid = () => {
 
   useEffect(() => {
     const handleGridMouseDown = (e) => {
+      e.preventDefault();
       if (e.target !== schedulerGridRef.current) return;
 
       createTask(e);

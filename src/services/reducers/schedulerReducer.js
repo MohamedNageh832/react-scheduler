@@ -37,7 +37,7 @@ export const reducer = (state, action) => {
       return { ...state, ...payload };
     case ACTIONS.CREATE_TASK:
       return { ...state, ...payload };
-    case ACTIONS.CANCEL_CREATE_TASK:
+    case ACTIONS.DELETE_TASK:
       return { ...state, ...payload };
     case ACTIONS.EDIT_TASK:
       return { ...state, activeEdit: payload.task };

@@ -10,14 +10,14 @@ const EnterTask = ({ value, onChange }) => {
   }, [focusMeRef.current]);
 
   return (
-    <section className="edit-task__group">
-      <label className="edit-task__title">Enter task</label>
+    <section className="form-group">
+      <label className="modal__title">Enter task</label>
       <input
         ref={focusMeRef}
         name="name"
         value={name}
         onChange={onChange}
-        className="scheduler__input"
+        className="input"
         type="text"
       />
     </section>

@@ -8,7 +8,7 @@ import EnterTask from "./enter-task";
 const localStorage = LocalStorage();
 
 const EditTask = () => {
-  const { state, handleUpdateTasks, cancelCreateTask } = useScheduler();
+  const { state, handleUpdateTasks, deleteTask } = useScheduler();
   const [values, setValues] = useState({
     name: state.activeEdit.name,
     color: "#0D6EFD",
@@ -19,7 +19,7 @@ const EditTask = () => {
   };
 
   const handleCancel = () => {
-    if (state.creatingTask) cancelCreateTask();
+    if (state.creatingTask) deleteTask(state.tasks.length - 1);
     else handleUpdateTasks(state.tasks);
   };
 
@@ -41,10 +41,9 @@ const EditTask = () => {
   return (
     <>
       <div className="overlay" onClick={handleCancel}></div>
-      <form onSubmit={handleSubmit} className="scheduler__edit-task">
+      <form onSubmit={handleSubmit} className="modal">
         <EnterTask value={values.name} onChange={onChange} />
         <ChooseColor values={values} setValues={setValues} />
-        <p className="scheduler__task-time"></p>
         <Controls handleCancel={handleCancel} />
       </form>
     </>

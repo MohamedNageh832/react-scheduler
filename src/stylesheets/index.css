@@ -428,6 +428,7 @@ th {
   --bg-primary-hover: #f1f3f4;
   --bg-tooltip: rgba(0, 0, 0, 0.7);
   --bg-overlay: rgba(255, 255, 255, 0.7);
+  --text-primary: #000;
   --text-secondary: #767676;
   --text-white: #fff;
   --hairline: #dadce0;
@@ -639,40 +640,6 @@ th {
   background-image: linear-gradient(to right, var(--hairline) 1px, transparent 1px), linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
 }
 
-.scheduler__edit-task {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--s2);
-  z-index: 10;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  width: 300px;
-  max-width: 95%;
-  padding: var(--s3);
-  border-radius: var(--bRadius1);
-  background-color: var(--bg-primary);
-}
-
-.edit-task__group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--s2);
-  width: 100%;
-}
-
-.edit-task__title {
-  font-weight: 500;
-  font-size: var(--fs4);
-}
-
-.edit-task__label {
-  font-size: var(--fs3);
-}
-
 .edit-task__colors-holder {
   display: flex;
   flex-wrap: wrap;
@@ -689,15 +656,6 @@ th {
 
 .edit-task__color.active {
   border-color: var(--grey);
-}
-
-.scheduler__input {
-  border-radius: var(--bRadius1);
-}
-
-.edit-task__controls {
-  display: flex;
-  gap: var(--s2);
 }
 
 .scheduler__task {
@@ -749,16 +707,17 @@ th {
 
 .task__controls {
   position: absolute;
-  top: 0;
-  left: -45px;
-  width: 40px;
+  top: 90%;
+  left: 0;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 2px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  padding: var(--s1);
+  border-radius: var(--bRadius1);
   background-color: var(--bg-primary);
   text-align: center;
 }
 
 .task__btn {
   padding: var(--s2);
-  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 2px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
 }
 
 .task__btn:hover {
@@ -821,6 +780,51 @@ th {
 
 .btn--secondary:hover {
   background-color: var(--light-grey-hover);
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  width: 300px;
+  max-width: 95%;
+  padding: var(--s3);
+  border-radius: var(--bRadius1);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: var(--fs2);
+}
+
+.modal__title {
+  margin-bottom: var(--s2);
+  font-weight: 500;
+  font-size: var(--fs3);
+}
+
+.modal__text {
+  margin-bottom: var(--s3);
+  color: var(--text-secondary);
+}
+
+.modal__controls {
+  display: flex;
+  gap: var(--s2);
+  margin-top: var(--s3);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  width: 100%;
+  margin-top: var(--s2);
+}
+
+.input {
+  border-radius: var(--bRadius1);
 }
 
 .flex {
