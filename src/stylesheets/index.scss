@@ -1,8 +1,8 @@
 // Base
-@use "./base/font-faces";
 @use "./base/normalize";
-@use "./base/main-rules";
+@use "./base/font-faces";
 @use "./base/variables";
+@use "./base/main-rules";
 
 // Components
 @use "./components/navbar";

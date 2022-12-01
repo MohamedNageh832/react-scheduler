@@ -1,17 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { ONE_HOUR_IN_GRID } from "../../services/constants/schedulerConstants";
 import useScheduler from "../../services/context/schedulerContext";
 
-const MIN_Y_STEP = 16;
-
 const Scheduler = ({ children }) => {
+  const schedulerRef = useRef();
   const { state, handleResizing, handleDragging, handleMouseUp } =
     useScheduler();
 
   useEffect(() => {
     const currentHour = new Date().getHours();
-    const scrollY = currentHour * 4 * MIN_Y_STEP;
+    const scrollY = currentHour * ONE_HOUR_IN_GRID;
 
-    window.scrollTo(0, scrollY);
+    schedulerRef.current.scrollTo(0, scrollY);
   }, []);
 
   useEffect(() => {
@@ -31,7 +31,11 @@ const Scheduler = ({ children }) => {
     };
   }, [state]);
 
-  return <main className="scheduler">{children}</main>;
+  return (
+    <main ref={schedulerRef} className="scheduler">
+      {children}
+    </main>
+  );
 };
 
 export default Scheduler;

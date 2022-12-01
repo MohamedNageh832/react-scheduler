@@ -7,7 +7,6 @@
 
 html {
   line-height: 1.8;
-  scroll-behavior: smooth;
 }
 
 body {
@@ -48,7 +47,7 @@ button:not(:disabled) {
 }
 
 a {
-  color: inherit;
+  color: var(--blue);
   text-decoration: none;
 }
 

@@ -11,6 +11,10 @@
   justify-content: space-between;
 }
 
+.p-3 {
+  padding: var(--s3);
+}
+
 @for $i from 1 through 6 {
   .fs-#{$i} {
     font-size: var(--s#{$i});

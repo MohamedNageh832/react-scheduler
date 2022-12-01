@@ -1,9 +1,5 @@
 .sidebar {
-  position: sticky;
-  top: 53px;
-  left: 0;
   flex-shrink: 0;
-  z-index: 6;
   width: 300px;
   max-width: 80%;
   height: calc(100vh - 53px);

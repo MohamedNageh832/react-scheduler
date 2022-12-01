@@ -6,8 +6,8 @@ const SidebarLinks = () => {
       <NavLink className="sidebar__link" to="/">
         Home
       </NavLink>
-      <NavLink className="sidebar__link" to="/about-us">
-        About us
+      <NavLink className="sidebar__link" to="/about">
+        About
       </NavLink>
     </>
   );

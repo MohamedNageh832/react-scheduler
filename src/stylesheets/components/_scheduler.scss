@@ -6,8 +6,11 @@
   --time-margin-top: 48px; // grid-cell-height - grid-cell-height / 4
   display: flex;
   width: 100%;
+  height: calc(100vh - 53px);
+  overflow: auto;
   padding: var(--s3);
   background-color: var(--bg-three);
+  scroll-behavior: smooth;
 }
 
 // Scheduler header
@@ -54,7 +57,6 @@
   border-radius: 50%;
   margin: auto;
   font-size: var(--fs4);
-  cursor: pointer;
 }
 
 .scheduler__date.active {
@@ -64,10 +66,6 @@
 
 .scheduler__date.active:hover {
   background-color: var(--blue-hover);
-}
-
-.scheduler__date:hover {
-  background-color: var(--bg-three-hover);
 }
 
 // Scheduler sidebar
