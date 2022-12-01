@@ -931,7 +931,6 @@ th {
 }
 
 .modal__title {
-  margin-bottom: var(--s2);
   font-weight: 500;
   font-size: var(--fs3);
 }
