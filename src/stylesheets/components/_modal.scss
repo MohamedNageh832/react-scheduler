@@ -14,6 +14,24 @@
   font-size: var(--fs2);
 }
 
+.modal__close {
+  position: absolute;
+  top: var(--s2);
+  right: var(--s2);
+  transform: rotate(45deg);
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  color: var(--text-one-secondary);
+  font-size: 30px;
+  line-height: 31px;
+}
+
+.modal__close:hover {
+  background-color: var(--bg-one-hover);
+  color: var(--text-one);
+}
+
 .modal__title {
   margin-bottom: var(--s2);
   font-weight: 500;

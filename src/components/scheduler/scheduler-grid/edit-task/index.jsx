@@ -11,7 +11,7 @@ const EditTask = () => {
   const { state, handleUpdateTasks, deleteTask } = useScheduler();
   const [values, setValues] = useState({
     name: state.activeEdit.name,
-    color: "#0D6EFD",
+    color: "blue",
   });
 
   const onChange = (e) => {

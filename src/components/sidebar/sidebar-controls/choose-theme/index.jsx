@@ -4,19 +4,26 @@ import ThemesHolder from "./themes-holder";
 const ChooseTheme = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleClick = () => {
+  const handleOpen = () => {
     setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
   };
 
   return (
     <section className="controls__item" data-category="Settings">
-      <button className="sidebar__label" onClick={handleClick}>
+      <button className="sidebar__label" onClick={handleOpen}>
         Theme
       </button>
       {isOpen && (
         <>
           <form className="modal edit-theme">
-            <h3 className="modal__title">Edit theme</h3>
+            <button className="modal__close" onClick={handleClose}>
+              +
+            </button>
+            <h3 className="modal__title">Choose theme</h3>
             <ThemesHolder />
           </form>
           <div className="overlay"></div>

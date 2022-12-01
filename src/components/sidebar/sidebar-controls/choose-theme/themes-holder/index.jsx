@@ -6,7 +6,7 @@ const ThemesHolder = () => {
   return (
     <section className="themes-holder">
       {themes.map((theme, i) => (
-        <Theme theme={theme} />
+        <Theme key={i} theme={theme} />
       ))}
     </section>
   );

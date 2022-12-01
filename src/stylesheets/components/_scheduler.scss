@@ -5,6 +5,7 @@
   --max-task-width: 118px; // 120px / 4 - 2
   --time-margin-top: 48px; // grid-cell-height - grid-cell-height / 4
   display: flex;
+  width: 100%;
   padding: var(--s3);
   background-color: var(--bg-three);
 }

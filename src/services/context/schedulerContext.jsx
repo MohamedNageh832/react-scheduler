@@ -60,6 +60,7 @@ export const SchedulerProvider = ({ children }) => {
       top: offsetTop,
       left: itemOffsetLeft,
       heightSpan: 1,
+      color: "blue",
       time: timeStart,
       date: state.activeWeek[horizontalStep].date,
     };
