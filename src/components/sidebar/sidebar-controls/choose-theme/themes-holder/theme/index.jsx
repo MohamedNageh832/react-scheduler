@@ -1,29 +1,12 @@
-import { useState } from "react";
-import { LocalStorage } from "../../../../../../utils/localStorage";
-
-const Theme = ({ theme }) => {
-  const localStorage = LocalStorage();
-  const currentTheme = localStorage.get("RS-theme-7263");
-
-  const [activeTheme, setActiveTheme] = useState(currentTheme);
-
-  const handleChange = (e) => {
-    const { value } = e.target;
-
-    document.body.setAttribute("class", value);
-
-    localStorage.set("RS-theme-7263", value);
-    setActiveTheme(value);
-  };
-
+const Theme = ({ theme, onChange, checked }) => {
   const inputProps = {
     name: "theme",
     id: theme,
     className: "theme__checkbox",
     type: "radio",
     value: theme,
-    checked: activeTheme === theme,
-    onChange: handleChange,
+    checked,
+    onChange: onChange,
   };
 
   return (

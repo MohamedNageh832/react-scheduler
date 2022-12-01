@@ -491,7 +491,8 @@ th {
   --hairline: #dadce0;
 }
 
-.dark {
+.dark,
+.indigo {
   --blue: #11499b;
   --red: #910505;
   --light-red: #b3574f;
@@ -500,6 +501,9 @@ th {
   --light-blue: #0f80b7;
   --dark-blue: #283370;
   --light-purple: #6874af;
+}
+
+.dark {
   --purple: #792191;
   --bg-one: #242526;
   --bg-one-hover: #3a3b3c;
@@ -524,7 +528,7 @@ th {
   --bg-three: #372b5e;
   --bg-three-hover: #320064;
   --bg-tooltip: rgba(0, 0, 0, 0.7);
-  --bg-overlay: rgba(255, 255, 255, 0.7);
+  --bg-overlay: rgba(55, 43, 94, 0.7);
   --text-one: #e6d6fa;
   --text-one-secondary: #8472ac;
   --text-two: #fff;
@@ -555,7 +559,7 @@ th {
   top: 53px;
   left: 0;
   flex-shrink: 0;
-  z-index: 2;
+  z-index: 6;
   width: 300px;
   max-width: 80%;
   height: calc(100vh - 53px);
@@ -709,7 +713,7 @@ th {
 .scheduler__time.active {
   border-radius: 5px;
   background-color: var(--blue);
-  color: var(--text-two);
+  color: var(--text-three);
 }
 
 .scheduler__time::after {

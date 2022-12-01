@@ -19,14 +19,14 @@ const ChooseTheme = () => {
       </button>
       {isOpen && (
         <>
-          <form className="modal edit-theme">
+          <section className="modal edit-theme">
             <button className="modal__close" onClick={handleClose}>
               +
             </button>
             <h3 className="modal__title">Choose theme</h3>
             <ThemesHolder />
-          </form>
-          <div className="overlay"></div>
+          </section>
+          <div className="overlay" onClick={handleClose}></div>
         </>
       )}
     </section>
