@@ -3,11 +3,11 @@
   flex-direction: column;
   gap: var(--s2);
   width: 100%;
-  margin-top: var(--s2);
 }
 
 .form-group--inline {
   display: inline-flex;
-  margin-right: var(--s3);
+  flex-direction: row;
+  align-items: center;
   gap: var(--s1);
 }

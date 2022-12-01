@@ -1,4 +1,4 @@
-import { compareDates } from "../../utils/compareDates";
+import { isEqualDates } from "../../utils/isEqualDates";
 import getSchedulerHeader from "../../utils/getSchedulerHeader";
 import { LocalStorage } from "../../utils/localStorage";
 import { ACTIONS } from "../actions/schedulerActions";
@@ -13,7 +13,7 @@ const localStorage = LocalStorage();
 const storedTasks = localStorage.get("tasks7263");
 const activeWeek = getSchedulerHeader(new Date());
 const activeTasks = (el) =>
-  activeWeek.some((column) => compareDates(el.date, column.date));
+  activeWeek.some((column) => isEqualDates(el.date, column.date));
 const tasks = storedTasks ? storedTasks.filter(activeTasks) : [];
 
 export const intialState = {

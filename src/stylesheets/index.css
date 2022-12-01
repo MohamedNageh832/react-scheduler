@@ -429,7 +429,7 @@ th {
   --green: #33b679;
   --dark-green: #0b8043;
   --light-blue: #039be5;
-  --dark-blue: "#3F51B5";
+  --dark-blue: #3f51b5;
   --light-purple: #7986cb;
   --purple: #8e24aa;
   --dark: #616161;
@@ -448,6 +448,7 @@ th {
   --text-two: #fff;
   --text-three: #fff;
   --hairline: #dadce0;
+  --box-shadow-one: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   /**/
   --box-shadow1: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
     rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
@@ -740,6 +741,16 @@ th {
   background-image: linear-gradient(to right, var(--hairline) 1px, transparent 1px), linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
 }
 
+.horizontal-rule {
+  display: inline-block;
+  width: 16px;
+  height: 2px;
+  border-radius: var(--bRadius1);
+  margin-left: var(--s2);
+  margin-right: var(--s2);
+  background-color: var(--text-one);
+}
+
 .edit-task__colors-holder {
   display: flex;
   flex-wrap: wrap;
@@ -888,9 +899,11 @@ th {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
   z-index: 10;
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-  width: 300px;
+  box-shadow: var(--box-shadow-one);
   max-width: 95%;
   padding: var(--s3);
   border-radius: var(--bRadius1);
@@ -924,14 +937,12 @@ th {
 }
 
 .modal__text {
-  margin-bottom: var(--s3);
   color: var(--text-one-secondary);
 }
 
 .modal__controls {
   display: flex;
   gap: var(--s2);
-  margin-top: var(--s3);
 }
 
 .form-group {
@@ -939,12 +950,12 @@ th {
   flex-direction: column;
   gap: var(--s2);
   width: 100%;
-  margin-top: var(--s2);
 }
 
 .form-group--inline {
   display: inline-flex;
-  margin-right: var(--s3);
+  flex-direction: row;
+  align-items: center;
   gap: var(--s1);
 }
 

@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer } from "react";
-import { compareDates } from "../../utils/compareDates";
+import { isEqualDates } from "../../utils/isEqualDates";
 import { LocalStorage } from "../../utils/localStorage";
 import { mouseOffsetX, mouseOffsetY } from "../../utils/mouseOffset";
 import { ACTIONS } from "../actions/schedulerActions";
@@ -22,7 +22,7 @@ export const SchedulerProvider = ({ children }) => {
 
   const changeActiveWeek = (activeWeek) => {
     const activeTasks = (el) =>
-      activeWeek.some((column) => compareDates(el.date, column.date));
+      activeWeek.some((column) => isEqualDates(el.date, column.date));
     const tasks = intialState.tasks.filter(activeTasks);
     dispatch({
       type: ACTIONS.CHANGE_ACTIVE_WEEK,
@@ -31,6 +31,8 @@ export const SchedulerProvider = ({ children }) => {
   };
 
   const handleUpdateTasks = (tasks) => {
+    localStorage.set("tasks7263", tasks);
+
     dispatch({
       type: ACTIONS.UPDATE_TASKS,
       payload: { tasks, creatingTask: false, activeEdit: null },
@@ -54,14 +56,18 @@ export const SchedulerProvider = ({ children }) => {
     const itemOffsetLeft = horizontalStep * MIN_X_STEP;
     const offsetTop = verticalStep * MIN_Y_STEP;
     const timeStart = getTaskTime({ offsetTop });
+    const timeEnd = getTaskTime({
+      offsetTop: offsetTop + MIN_Y_STEP,
+    });
 
     const task = {
       name: "no title",
       top: offsetTop,
       left: itemOffsetLeft,
-      heightSpan: 1,
+      height: 14,
       color: "blue",
-      time: timeStart,
+      timeStart,
+      timeEnd,
       date: state.activeWeek[horizontalStep].date,
     };
 
@@ -114,16 +120,16 @@ export const SchedulerProvider = ({ children }) => {
 
     let mouseYPos = mouseOffsetY(e, state.gridElement) - task.top;
     if (mouseYPos < 1) mouseYPos = 1;
-    const heightSpan = Math.ceil(mouseYPos / MIN_Y_STEP);
 
-    task.heightSpan = heightSpan;
-    const timeStart = getTaskTime({ offsetTop: task.top });
+    const height = Math.ceil(mouseYPos / MIN_Y_STEP) * MIN_Y_STEP;
 
     const timeEnd = getTaskTime({
-      offsetTop: task.top + heightSpan * MIN_Y_STEP,
+      offsetTop: task.top + height,
     });
 
-    task.time = heightSpan > 1 ? `${timeStart} - ${timeEnd}` : timeStart;
+    task.height = height - 2;
+
+    task.timeEnd = timeEnd;
 
     localStorage.set("tasks7263", state.tasks);
     dispatch({ type: ACTIONS.RESIZING, payload: { tasks: state.tasks } });
@@ -149,32 +155,34 @@ export const SchedulerProvider = ({ children }) => {
     let mouseYPos = mouseYOffset - state.mouseOffset.y;
 
     const overflowsTop = mouseYPos < 1;
-    const taskHeight = task.heightSpan * MIN_Y_STEP;
-    const taskOffsetBottom = task.top + taskHeight;
+    const taskOffsetBottom = task.top + task.height;
     const isTouchingBottom = taskOffsetBottom >= grid.clientHeight;
     const mouseYIsOutside =
-      mouseYOffset + taskHeight - state.mouseOffset.y > grid.clientHeight;
+      mouseYOffset + task.height - state.mouseOffset.y > grid.clientHeight;
 
     if (overflowsTop) mouseYPos = 0;
     else if (isTouchingBottom && mouseYIsOutside)
-      mouseYPos = grid.clientHeight - taskHeight;
+      mouseYPos = grid.clientHeight - task.height;
 
     const horizontalStep = Math.floor(mouseXPos / MIN_X_STEP);
     const verticalStep = Math.floor(mouseYPos / MIN_Y_STEP);
 
-    const taskOffsetLeft = horizontalStep * MIN_X_STEP;
-    const taskOffsetTop = verticalStep * MIN_Y_STEP;
+    const left = horizontalStep * MIN_X_STEP;
+    const top = verticalStep * MIN_Y_STEP;
 
-    const timeStart = getTaskTime({ offsetTop: taskOffsetTop });
+    const timeStart = getTaskTime({ offsetTop: top });
 
     const timeEnd = getTaskTime({
-      offsetTop: taskOffsetTop + task.heightSpan * MIN_Y_STEP,
+      offsetTop: top + task.height + 2,
     });
 
-    task.left = taskOffsetLeft;
-    task.top = taskOffsetTop;
-    task.date = state.activeWeek[horizontalStep].date;
-    task.time = task.heightSpan > 1 ? `${timeStart} - ${timeEnd}` : timeStart;
+    const date = state.activeWeek[horizontalStep].date;
+
+    task.left = left;
+    task.top = top;
+    task.date = date;
+    task.timeStart = timeStart;
+    task.timeEnd = timeEnd;
 
     localStorage.set("tasks7263", state.tasks);
     dispatch({ type: ACTIONS.DRAGGING, payload: { tasks: state.tasks } });
@@ -215,13 +223,10 @@ export const SchedulerProvider = ({ children }) => {
 function getTaskTime({ offsetTop }) {
   const hours = Math.floor(offsetTop / ONE_HOUR_IN_GRID);
   const minutes = Math.floor((offsetTop % ONE_HOUR_IN_GRID) / 15) * 15;
+  const adjustedHours = hours < 10 ? `0${hours}` : hours;
+  const adjustedMinutes = minutes < 10 ? `0${minutes}` : minutes;
 
-  const hours12 = hours < 13 ? hours : hours - 12;
-  const adjustedHours = hours12 === 0 ? `12` : hours12;
-  const adjustedMinutes = minutes < 15 ? `0${minutes}` : minutes;
-  const adjustedTime = hours < 12 ? "am" : "pm";
-
-  return `${adjustedHours}:${adjustedMinutes} ${adjustedTime}`;
+  return `${adjustedHours}:${adjustedMinutes}`;
 }
 
 const useScheduler = () => {

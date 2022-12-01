@@ -1,4 +1,4 @@
-const compareDates = (date1, date2, options) => {
+const isEqualDates = (date1, date2, options) => {
   const { fullComparizon } = options || {};
 
   const dateOne = new Date(date1);
@@ -13,4 +13,4 @@ const compareDates = (date1, date2, options) => {
   );
 };
 
-export { compareDates };
+export { isEqualDates };

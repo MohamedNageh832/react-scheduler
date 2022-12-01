@@ -129,6 +129,16 @@
 
 // Scheduler edit task
 
+.horizontal-rule {
+  display: inline-block;
+  width: 16px;
+  height: 2px;
+  border-radius: var(--bRadius1);
+  margin-left: var(--s2);
+  margin-right: var(--s2);
+  background-color: var(--text-one);
+}
+
 .edit-task__colors-holder {
   display: flex;
   flex-wrap: wrap;
