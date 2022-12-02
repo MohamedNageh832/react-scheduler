@@ -1,8 +1,9 @@
 const NotFound = () => {
   return (
-    <>
-      <h2>sorry!</h2>
-    </>
+    <section className="p-3">
+      <h2>404! page not found</h2>
+      <p>sorry we can't find the page you are looking for</p>
+    </section>
   );
 };
 

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { ONE_HOUR_IN_GRID } from "../../services/constants/schedulerConstants";
 import useScheduler from "../../services/context/schedulerContext";
+import "./style.css";
 
 const Scheduler = ({ children }) => {
   const schedulerRef = useRef();

@@ -1,3 +1,5 @@
+import "./style.css";
+
 const Navbar = () => {
   return (
     <header className="navbar">
