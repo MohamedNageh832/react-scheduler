@@ -48,9 +48,9 @@ const SchedulerTask = ({ task, index }) => {
     setControls((prev) => ({ ...prev, openContextMenu: true }));
   };
 
-  const startResize = (e) => {
+  const startResize = () => {
     setControls((prev) => ({ ...prev, openContextMenu: false }));
-    startResizing(e, index);
+    startResizing(index);
   };
 
   const taskProps = {

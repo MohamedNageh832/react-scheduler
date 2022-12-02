@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer } from "react";
 import { isEqualDates } from "../../utils/isEqualDates";
 import { LocalStorage } from "../../utils/localStorage";
-import { mouseOffsetX, mouseOffsetY } from "../../utils/mouseOffset";
+import { getMouseOffset } from "../../utils/getMouseOffset";
 import { ACTIONS } from "../actions/schedulerActions";
 import {
   MIN_X_STEP,
@@ -47,11 +47,10 @@ export const SchedulerProvider = ({ children }) => {
   };
 
   const createTask = (e) => {
-    const mouseXPos = mouseOffsetX(e, state.gridElement);
-    const mouseYPos = mouseOffsetY(e, state.gridElement);
+    const { x, y } = getMouseOffset(e, state.gridElement);
 
-    const horizontalStep = Math.floor(mouseXPos / MIN_X_STEP);
-    const verticalStep = Math.floor(mouseYPos / MIN_Y_STEP);
+    const horizontalStep = Math.floor(x / MIN_X_STEP);
+    const verticalStep = Math.floor(y / MIN_Y_STEP);
 
     const itemOffsetLeft = horizontalStep * MIN_X_STEP;
     const offsetTop = verticalStep * MIN_Y_STEP;
@@ -91,23 +90,18 @@ export const SchedulerProvider = ({ children }) => {
     });
   };
 
-  const startResizing = (e, resizerIndex) => {
-    const mouseOffset = {
-      x: mouseOffsetX(e, state.gridELement),
-      y: mouseOffsetY(e, state.gridELement) - e.target.offsetTop,
-    };
-
+  const startResizing = (resizerIndex) => {
     dispatch({
       type: ACTIONS.START_RESIZING,
-      payload: { mouseOffset, resizerIndex },
+      payload: { resizerIndex },
     });
   };
 
   const startDragging = (e, currentDraggedIdx) => {
-    const mouseOffset = {
-      x: mouseOffsetX(e, state.gridElement),
-      y: mouseOffsetY(e, state.gridElement) - e.target.offsetTop,
-    };
+    const task = state.tasks[currentDraggedIdx];
+    const { x, y } = getMouseOffset(e, state.gridElement);
+
+    const mouseOffset = { x: x - task.left, y: y - task.top };
 
     dispatch({
       type: ACTIONS.START_DRAGGING,
@@ -118,7 +112,9 @@ export const SchedulerProvider = ({ children }) => {
   const handleResizing = (e) => {
     const task = state.tasks[state.resizerIndex];
 
-    let mouseYPos = mouseOffsetY(e, state.gridElement) - task.top;
+    const { y } = getMouseOffset(e, state.gridElement);
+    let mouseYPos = y - task.top;
+
     if (mouseYPos < 1) mouseYPos = 1;
 
     const height = Math.ceil(mouseYPos / MIN_Y_STEP) * MIN_Y_STEP;
@@ -139,32 +135,32 @@ export const SchedulerProvider = ({ children }) => {
     const task = state.tasks[state.currentDraggedIdx];
     const grid = state.gridElement;
 
-    let mouseXPos = mouseOffsetX(e, grid);
+    let { x } = getMouseOffset(e, grid);
 
-    const overflowsLeft = mouseXPos < 1;
+    const overflowsLeft = x < 1;
     const taskWidth = MIN_X_STEP;
     const taskOffsetRight = task.left + taskWidth;
     const isTouchingRight = taskOffsetRight >= grid.clientWidth;
-    const mouseXIsOutside = mouseXPos + taskWidth > grid.clientWidth;
+    const mouseXIsOutside = x + taskWidth > grid.clientWidth;
 
-    if (overflowsLeft) mouseXPos = 0;
+    if (overflowsLeft) x = 0;
     else if (isTouchingRight && mouseXIsOutside)
-      mouseXPos = grid.clientWidth - taskWidth;
+      x = grid.clientWidth - taskWidth;
 
-    const mouseYOffset = mouseOffsetY(e, grid);
-    let mouseYPos = mouseYOffset - state.mouseOffset.y;
+    const { y } = getMouseOffset(e, grid);
+    let mouseYPos = y - state.mouseOffset.y;
 
     const overflowsTop = mouseYPos < 1;
     const taskOffsetBottom = task.top + task.height;
     const isTouchingBottom = taskOffsetBottom >= grid.clientHeight;
     const mouseYIsOutside =
-      mouseYOffset + task.height - state.mouseOffset.y > grid.clientHeight;
+      y + task.height - state.mouseOffset.y > grid.clientHeight;
 
     if (overflowsTop) mouseYPos = 0;
     else if (isTouchingBottom && mouseYIsOutside)
       mouseYPos = grid.clientHeight - task.height;
 
-    const horizontalStep = Math.floor(mouseXPos / MIN_X_STEP);
+    const horizontalStep = Math.floor(x / MIN_X_STEP);
     const verticalStep = Math.floor(mouseYPos / MIN_Y_STEP);
 
     const left = horizontalStep * MIN_X_STEP;
