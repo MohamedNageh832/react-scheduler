@@ -1,8 +1,7 @@
+import getCurrentTime from "./getCurrentTime";
+
 const SchedulerSidebar = () => {
-  const current24Hour = new Date().getHours();
-  const pmTime = current24Hour > 11;
-  const currentHour =
-    pmTime && current24Hour !== 12 ? current24Hour - 12 : current24Hour;
+  const { currentHour, pmTime, current24Hour } = getCurrentTime();
 
   return (
     <ul className="scheduler__sidebar">

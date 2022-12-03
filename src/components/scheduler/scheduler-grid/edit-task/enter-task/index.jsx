@@ -12,7 +12,7 @@ const EnterTask = ({ value, onChange }) => {
   }, [focusMeRef.current]);
 
   return (
-    <section className="form-group">
+    <section className="form__group">
       <label className="modal__title">Enter task</label>
       <input
         ref={focusMeRef}

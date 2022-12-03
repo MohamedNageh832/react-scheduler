@@ -1,30 +1,9 @@
-import { useEffect, useRef } from "react";
-import useScheduler from "../../../services/context/schedulerContext";
 import EditTask from "./edit-task";
 import SchedulerTasks from "../scheduler-tasks";
+import useSchedulerGrid from "./useSchedulerGrid";
 
 const SchedulerGrid = () => {
-  const schedulerGridRef = useRef();
-  const { state, addGridElement, createTask } = useScheduler();
-
-  useEffect(() => {
-    if (schedulerGridRef.current) {
-      addGridElement(schedulerGridRef.current);
-    }
-  }, [schedulerGridRef.current]);
-
-  useEffect(() => {
-    const handleGridMouseDown = (e) => {
-      if (e.target !== schedulerGridRef.current) return;
-
-      createTask(e);
-    };
-
-    window.addEventListener("mousedown", handleGridMouseDown);
-    return () => {
-      window.removeEventListener("mousedown", handleGridMouseDown);
-    };
-  }, [state]);
+  const { state, schedulerGridRef } = useSchedulerGrid();
 
   return (
     <div

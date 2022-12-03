@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useMemo, useReducer } from "react";
 import { isEqualDates } from "../../utils/isEqualDates";
 import { LocalStorage } from "../../utils/localStorage";
 import { getMouseOffset } from "../../utils/getMouseOffset";
@@ -194,20 +194,23 @@ export const SchedulerProvider = ({ children }) => {
     dispatch({ type: ACTIONS.MOUSE_UP, payload: {} });
   };
 
-  const value = {
-    state,
-    editTask,
-    changeActiveWeek,
-    handleUpdateTasks,
-    startResizing,
-    startDragging,
-    addGridElement,
-    createTask,
-    deleteTask,
-    handleResizing,
-    handleDragging,
-    handleMouseUp,
-  };
+  const value = useMemo(
+    () => ({
+      state,
+      editTask,
+      changeActiveWeek,
+      handleUpdateTasks,
+      startResizing,
+      startDragging,
+      addGridElement,
+      createTask,
+      deleteTask,
+      handleResizing,
+      handleDragging,
+      handleMouseUp,
+    }),
+    [state]
+  );
 
   return (
     <SchedulerContext.Provider value={value}>
