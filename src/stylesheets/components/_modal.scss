@@ -8,7 +8,8 @@
   gap: var(--s3);
   z-index: 10;
   box-shadow: var(--box-shadow-one);
-  max-width: 95%;
+  min-width: 250px;
+  max-width: 90%;
   padding: var(--s3);
   border-radius: var(--bRadius1);
   background-color: var(--bg-one);

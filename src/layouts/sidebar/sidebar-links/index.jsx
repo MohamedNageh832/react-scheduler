@@ -5,9 +5,16 @@ const links = [
   { path: "/about", text: "About" },
 ];
 
-const SidebarLinks = () => {
+const SidebarLinks = ({ setIsOpen }) => {
+  const handleClick = () => setIsOpen(false);
+
   return links.map((link, i) => (
-    <NavLink key={i} to={link.path} className="sidebar__link">
+    <NavLink
+      key={i}
+      onClick={handleClick}
+      to={link.path}
+      className="sidebar__link"
+    >
       {link.text}
     </NavLink>
   ));

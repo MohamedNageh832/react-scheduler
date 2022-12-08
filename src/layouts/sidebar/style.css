@@ -166,4 +166,52 @@
   width: 100%;
   height: 100%;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    transform: translateX(-100%);
+    z-index: 8;
+    transition: all 0.5s ease-in-out;
+  }
+  .sidebar::before {
+    content: "React scheduler";
+    display: block;
+    margin-bottom: var(--s3);
+    font-size: var(--fs5);
+    font-weight: 500;
+  }
+  .sidebar.active {
+    transform: translateX(0);
+  }
+  .sidebar__toggler {
+    position: fixed;
+    top: 60px;
+    left: 82vw;
+    padding: var(--s3);
+    border-radius: 50%;
+    font-size: 42px;
+    box-shadow: var(--box-shadow-one);
+  }
+  .sidebar__toggler::before {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 10px;
+    transform: rotate(45deg);
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--text-one) var(--text-one) transparent transparent;
+    margin-left: -4px;
+    margin-right: 4px;
+  }
+  .sidebar__toggler.active::before {
+    transform: rotate(-135deg);
+    margin-left: 4px;
+    margin-right: -4px;
+  }
 }/*# sourceMappingURL=style.css.map */

@@ -13,10 +13,22 @@
   scroll-behavior: smooth;
 }
 
+// Schedular body
+
+.scheduler__body {
+  height: 1614px; // Grid height + date column height
+}
+
 // Scheduler header
 
 .scheduler__header {
+  position: sticky;
+  top: -16px;
   display: flex;
+  z-index: 5;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: -1px;
+  background-color: var(--bg-three);
 }
 
 .scheduler__column {
@@ -70,9 +82,16 @@
 
 // Scheduler sidebar
 .scheduler__sidebar {
+  position: sticky;
+  left: -16px; // Parent padding
+  z-index: 6;
   width: 50px;
+  height: 1614px; // Grid height + date column height
   padding-top: 22px;
   padding-right: var(--fs2);
+  border-right: 1px solid var(--hairline);
+  margin-right: -1px;
+  background-color: var(--bg-three);
   text-align: end;
 }
 
@@ -98,17 +117,13 @@
   content: "";
   position: absolute;
   top: 8px;
-  right: -38%; // 30% width + 4px padding-right (parent)
+  right: -30%;
   width: 30%;
   height: 1px;
   background-color: var(--hairline);
 }
 
-// Schedular body
-
-.scheduler__body {
-  height: 100%;
-}
+// Scheduler grid
 
 .scheduler__grid {
   --min-y-step: 16px;
@@ -126,6 +141,10 @@
 }
 
 // Scheduler edit task
+
+.edit-task {
+  width: 300px;
+}
 
 .horizontal-rule {
   display: inline-block;

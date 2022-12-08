@@ -11,7 +11,7 @@ const EditTask = () => {
   return (
     <>
       <div className="overlay" onClick={handleCancel}></div>
-      <form onSubmit={handleSubmit} className="modal">
+      <form onSubmit={handleSubmit} className="modal edit-task">
         <EnterTask value={values.name} onChange={onChange} />
         <ChooseTime values={values} setValues={setValues} />
         <ChooseColor values={values} setValues={setValues} />

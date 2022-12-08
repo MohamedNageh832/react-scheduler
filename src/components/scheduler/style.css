@@ -13,8 +13,19 @@
   scroll-behavior: smooth;
 }
 
+.scheduler__body {
+  height: 1614px;
+}
+
 .scheduler__header {
+  position: -webkit-sticky;
+  position: sticky;
+  top: -16px;
   display: flex;
+  z-index: 5;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: -1px;
+  background-color: var(--bg-three);
 }
 
 .scheduler__column {
@@ -70,9 +81,17 @@
 }
 
 .scheduler__sidebar {
+  position: -webkit-sticky;
+  position: sticky;
+  left: -16px;
+  z-index: 6;
   width: 50px;
+  height: 1614px;
   padding-top: 22px;
   padding-right: var(--fs2);
+  border-right: 1px solid var(--hairline);
+  margin-right: -1px;
+  background-color: var(--bg-three);
   text-align: end;
 }
 
@@ -101,14 +120,10 @@
   content: "";
   position: absolute;
   top: 8px;
-  right: -38%;
+  right: -30%;
   width: 30%;
   height: 1px;
   background-color: var(--hairline);
-}
-
-.scheduler__body {
-  height: 100%;
 }
 
 .scheduler__grid {
@@ -119,6 +134,10 @@
   height: calc(var(--min-y-step) * var(--available-y-steps));
   background-size: var(--grid-cell-width) var(--grid-cell-height);
   background-image: linear-gradient(to right, var(--hairline) 1px, transparent 1px), linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+}
+
+.edit-task {
+  width: 300px;
 }
 
 .horizontal-rule {
