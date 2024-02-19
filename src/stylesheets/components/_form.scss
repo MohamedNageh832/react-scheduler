@@ -1,0 +1,32 @@
+.form__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  width: 100%;
+}
+
+.form__group--inline {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--s1);
+}
+
+.form__input {
+  border-radius: 0;
+  border-bottom: 2px solid var(--dark-blue);
+}
+
+.form__input:focus-visible {
+  outline: none;
+}
+
+.form__input:focus {
+  box-shadow: none;
+  border-color: var(--blue);
+}
+
+.form__input--border {
+  border: 1px solid var(--hairline);
+  border-radius: var(--bRadius1);
+}

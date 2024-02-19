@@ -1,0 +1,23 @@
+.btn {
+  padding: var(--s2);
+  border-radius: var(--bRadius1);
+  transition: all 0.15s ease-in-out;
+}
+
+.btn--blue {
+  background-color: var(--blue);
+  color: #fff;
+}
+
+.btn--blue:hover {
+  background-color: var(--blue-hover);
+}
+
+.btn--secondary {
+  background-color: var(--light-grey);
+  color: var(--text-one-secondary);
+}
+
+.btn--secondary:hover {
+  background-color: var(--light-grey-hover);
+}

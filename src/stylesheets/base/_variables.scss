@@ -1,0 +1,145 @@
+/*
+ ! NOTE: 
+ ! on editting an existing theme or adding new one 
+ ! head to _edit-theme.scss and apply these changes to .theme
+*/
+
+:root {
+  --s1: 0.25rem;
+  --s2: 0.5rem;
+  --s3: 1rem;
+  --s4: 1.5rem;
+  --s5: 2rem;
+
+  /*Border radius*/
+  --bRadius1: 5px;
+  --bRadius2: 10px;
+
+  /* Font sizes */
+  --fs1: 12px;
+  --fs2: 14px;
+  --fs3: 16px;
+  --fs4: 20px;
+  --fs5: 24px;
+  --fs6: 32px;
+
+  --blue: #0d6efd;
+  --blue-hover: #0b5ed7;
+  --red: #d50000;
+  --light-red: #e67c73;
+  --green: #33b679;
+  --dark-green: #0b8043;
+  --light-blue: #039be5;
+  --disabled-blue: #c4e6f7;
+  --dark-blue: #3f51b5;
+  --light-purple: #7986cb;
+  --purple: #8e24aa;
+  --dark: #616161;
+  --grey: #bbb;
+  --light-grey: #f4f4f4;
+  --light-grey-hover: #e8e8e8;
+  --bg-one: #fff;
+  --bg-one-hover: #f1f3f4;
+  --bg-two: #212529;
+  --bg-three: #f4f4f4;
+  --bg-three-hover: #e5e5e5;
+  --bg-tooltip: rgba(0, 0, 0, 0.7);
+  --bg-overlay: rgba(255, 255, 255, 0.7);
+  --text-one: #000;
+  --text-one-secondary: #767676;
+  --text-two: #fff;
+  --text-three: #fff;
+  --text-tooltip: #aaa;
+  --hairline: #dadce0;
+  --box-shadow-one: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+  /**/
+  --box-shadow1: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+@media (min-width: 1400px) {
+  html {
+    font-size: 20px;
+  }
+
+  body {
+    --fs1: 16px;
+    --fs2: 20px;
+    --fs3: 24px;
+    --fs4: 32px;
+    --fs5: 40px;
+    --fs6: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    --fs1: 12px;
+    --fs2: 14px;
+    --fs3: 14px;
+    --fs4: 16px;
+    --fs5: 20px;
+    --fs6: 24px;
+  }
+}
+
+.all-white {
+  --bg-one: #fff;
+  --bg-one-hover: #f1f3f4;
+  --bg-two: #fff;
+  --bg-three: #fff;
+  --bg-three-hover: #f1f3f4;
+  --bg-tooltip: rgba(0, 0, 0, 0.7);
+  --bg-overlay: rgba(255, 255, 255, 0.7);
+  --text-one: #000;
+  --text-one-secondary: #767676;
+  --text-two: #000;
+  --text-three: #fff;
+  --hairline: #dadce0;
+}
+
+.dark,
+.indigo {
+  --blue: #11499b;
+  --red: #910505;
+  --light-red: #b3574f;
+  --green: #277e55;
+  --dark-green: #086032;
+  --light-blue: #0f80b7;
+  --dark-blue: #283370;
+  --light-purple: #6874af;
+}
+
+.dark {
+  --purple: #792191;
+  --bg-one: #242526;
+  --bg-one-hover: #3a3b3c;
+  --bg-two: #192734;
+  --bg-three: #121212;
+  --bg-three-hover: #282828;
+  --bg-tooltip: rgba(0, 0, 0, 0.7);
+  --bg-overlay: rgba(18, 18, 18, 0.7);
+  --text-one: #e5e5e5;
+  --text-one-secondary: #8d8d8d;
+  --text-two: #fff;
+  --text-three: #e5e5e5;
+  --hairline: #404040;
+  --light-grey: #282828;
+  --light-grey-hover: #3a3b3c;
+}
+
+.indigo {
+  --bg-one: #1a1437;
+  --bg-one-hover: #5a4b85;
+  --bg-two: #060410;
+  --bg-three: #372b5e;
+  --bg-three-hover: #320064;
+  --bg-tooltip: rgba(0, 0, 0, 0.7);
+  --bg-overlay: rgba(55, 43, 94, 0.7);
+  --text-one: #e6d6fa;
+  --text-one-secondary: #8472ac;
+  --text-two: #fff;
+  --text-three: #fff;
+  --hairline: #5a4b85;
+}

@@ -1,0 +1,29 @@
+.flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.p-3 {
+  padding: var(--s3);
+}
+
+@for $i from 1 through 6 {
+  .fs-#{$i} {
+    font-size: var(--fs#{$i});
+  }
+}
+
+.fixed-center {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

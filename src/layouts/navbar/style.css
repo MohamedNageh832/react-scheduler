@@ -1,0 +1,18 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  padding: var(--s2);
+  border-bottom: 1px solid var(--hairline);
+  background-color: var(--bg-two);
+  color: var(--light-blue);
+}
+
+.navbar__logo {
+  font-size: var(--fs5);
+  font-weight: 500;
+}
+
+.navbar__text {
+  color: var(--text-two);
+  font-size: var(--fs1);
+}/*# sourceMappingURL=style.css.map */

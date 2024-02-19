@@ -1,0 +1,40 @@
+.tooltip {
+  max-width: 80%;
+  z-index: 5;
+  padding: var(--s2) var(--s3);
+  border-radius: var(--bRadius1);
+  background-color: var(--bg-tooltip);
+  font-size: var(--fs2);
+}
+
+.tooltip--auto-hide {
+  animation: fadeOut 0.5s 2s ease-in-out forwards;
+}
+
+.tooltip__title {
+  color: var(--text-tooltip);
+  font-size: var(--fs3);
+  font-weight: 400;
+}
+
+.tooltip__text {
+  color: var(--text-three);
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    z-index: -1;
+    visibility: hidden;
+  }
+}
+
+@media (max-width: 768px) {
+  .tooltip {
+    font-size: var(--fs1);
+  }
+}
